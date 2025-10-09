@@ -1,18 +1,99 @@
 .footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
   background-color: #000000;
-  color: #FCBE03;
+  color: var(--text-color-secondary);
+  padding: 80px 40px 20px;
+  border-top: 1px solid var(--border-color);
 
-  .social-links a {
-    color: #FCBE03;
-    margin-left: 1rem;
-    text-decoration: none;
+  .footer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    max-width: 1400px;
+    margin: 0 auto 60px;
 
-    &:hover {
-      text-decoration: underline;
+    .footer-column {
+      h3,
+      h4 {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--text-color);
+        margin-bottom: 20px;
+      }
+
+      p {
+        margin-bottom: 20px;
+        line-height: 1.6;
+      }
     }
+
+    .footer-brand {
+      .social-icons {
+        display: flex;
+        gap: 15px;
+
+        a {
+          color: var(--text-color-secondary);
+          font-size: 24px;
+          transition: color 0.3s ease;
+
+          &:hover {
+            color: var(--primary-color);
+          }
+        }
+      }
+    }
+
+    .footer-links {
+      ul {
+        list-style: none;
+
+        li {
+          margin-bottom: 10px;
+
+          a {
+            color: var(--text-color-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+
+            &:hover {
+              color: var(--primary-color);
+            }
+          }
+        }
+      }
+    }
+
+    .footer-newsletter {
+      .newsletter-form {
+        display: flex;
+
+        input {
+          flex-grow: 1;
+          padding: 12px;
+          border: 1px solid var(--border-color);
+          background-color: var(--input-background-color);
+          color: var(--text-color);
+          border-radius: 8px 0 0 8px;
+          font-size: 16px;
+
+          &:focus {
+            outline: none;
+            border-color: var(--primary-color);
+          }
+        }
+
+        .btn-primary {
+          border-radius: 0 8px 8px 0;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+
+  .footer-bottom {
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
+    text-align: center;
+    font-size: 14px;
   }
 }

@@ -1,35 +1,97 @@
-.home {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background-color: #000000;
-  color: #FCBE03;
-  text-align: center;
+.home-page {
+  .hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 100px 40px;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1f1f1f 100%);
 
-  .hero-content {
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-    }
+    .hero-content {
+      max-width: 600px;
 
-    p {
-      font-size: 1.25rem;
-      margin-bottom: 2rem;
-    }
-
-    button {
-      padding: 1rem 2rem;
-      background-color: #FCBE03;
-      color: #000000;
-      border: none;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-
-      &:hover {
-        background-color: darken(#FCBE03, 10%);
+      h1 {
+        font-size: 64px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: var(--primary-color);
       }
+
+      p {
+        font-size: 20px;
+        color: var(--text-color-secondary);
+        margin-bottom: 40px;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 20px;
+      }
+    }
+
+    .hero-image {
+      img {
+        max-width: 500px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      }
+    }
+  }
+
+  .features {
+    display: flex;
+    justify-content: space-around;
+    padding: 80px 40px;
+    background-color: var(--background-color);
+
+    .feature {
+      text-align: center;
+      max-width: 300px;
+
+      .feature-icon {
+        font-size: 48px;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+      }
+
+      h2 {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+
+      p {
+        color: var(--text-color-secondary);
+      }
+    }
+  }
+
+  .cta {
+    text-align: center;
+    padding: 80px 40px;
+    background: linear-gradient(135deg, #1f1f1f 0%, #0a0a0a 100%);
+
+    h2 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 30px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .home-page {
+    .hero {
+      flex-direction: column;
+      text-align: center;
+
+      .hero-image {
+        margin-top: 40px;
+      }
+    }
+
+    .features {
+      flex-direction: column;
+      gap: 40px;
     }
   }
 }

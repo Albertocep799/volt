@@ -1,0 +1,26 @@
+.gamedevs-page {
+  .page-header {
+    text-align: center;
+    padding: 80px 40px;
+    background-color: var(--card-background-color);
+
+    h1 {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 18px;
+      color: var(--text-color-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  }
+
+  .page-content {
+    padding: 80px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+}

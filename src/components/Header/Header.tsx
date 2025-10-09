@@ -1,31 +1,33 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import './Header.scss';
 
 const Header: React.FC = () => {
-  const [navOpen, setNavOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
-    <header className={`header ${navOpen ? 'nav-open' : ''}`}>
-      <div className="logo">
-        <NavLink to="/">Volt</NavLink>
-      </div>
-      <button className="menu-toggle" onClick={() => setNavOpen(!navOpen)}>
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <nav className="main-nav">
-        <ul>
-          <li><NavLink to="/features" className={({ isActive }) => isActive ? 'active' : ''} onClick={() => setNavOpen(false)}>Features</NavLink></li>
-          <li><NavLink to="/how-it-works" className={({ isActive }) => isActive ? 'active' : ''} onClick={() => setNavOpen(false)}>How It Works</NavLink></li>
-          <li><NavLink to="/testimonials" className={({ isActive }) => isActive ? 'active' : ''} onClick={() => setNavOpen(false)}>Testimonials</NavLink></li>
-          <li><NavLink to="/faq" className={({ isActive }) => isActive ? 'active' : ''} onClick={() => setNavOpen(false)}>FAQ</NavLink></li>
-        </ul>
-      </nav>
-      <div className="actions">
-        <NavLink to="/login" className="btn btn-secondary">Login</NavLink>
-        <NavLink to="/contact" className="btn btn-primary">Contact Us</NavLink>
+    <header className="header">
+      <div className="header-container">
+        <Link to="/" className="logo">Volt</Link>
+        <nav className={`nav-links ${isMenuOpen ? 'open' : ''}`}>
+          <NavLink to="/features">Features</NavLink>
+          <NavLink to="/pricing">Pricing</NavLink>
+          <NavLink to="/about">About</NavLink>
+          <NavLink to="/contact">Contact</NavLink>
+        </nav>
+        <div className="header-actions">
+          <Link to="/login" className="btn btn-secondary">Login</Link>
+          <Link to="/signup" className="btn btn-primary">Sign Up</Link>
+        </div>
+        <div className="menu-toggle" onClick={toggleMenu}>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </div>
     </header>
   );
