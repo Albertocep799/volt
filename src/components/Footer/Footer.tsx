@@ -10,6 +10,16 @@ const Footer: React.FC = () => {
         <div className="footer-column footer-brand">
           <h3>Volt</h3>
           <p>Supercharge your brand's reach in the gaming universe.</p>
+          <div className="language-container">
+            <label htmlFor="language-select">Language</label>
+            <div className="language-selector">
+              <select id="language-select">
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+              </select>
+            </div>
+          </div>
           <div className="social-icons">
             <a href="#"><FaDiscord /></a>
             <a href="#"><FaTwitter /></a>
@@ -20,7 +30,6 @@ const Footer: React.FC = () => {
           <h4>Explore</h4>
           <ul>
             <li><Link to="/features">Features</Link></li>
-            <li><Link to="/pricing">Pricing</Link></li>
             <li><Link to="/about">About</Link></li>
             <li><Link to="/contact">Contact</Link></li>
           </ul>

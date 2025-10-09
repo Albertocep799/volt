@@ -1,0 +1,46 @@
+.careers-page {
+  padding: 60px 20px;
+  text-align: center;
+  background-color: #000;
+  color: #fff;
+
+  h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-size: 18px;
+    max-width: 800px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+  }
+
+  .job-listings {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
+
+    h2 {
+      font-size: 32px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 10px;
+    }
+
+    .job-item {
+      margin-bottom: 30px;
+
+      h3 {
+        font-size: 24px;
+        margin-bottom: 10px;
+        color: var(--brand-color);
+      }
+
+      p {
+        font-size: 16px;
+        margin-left: 0;
+      }
+    }
+  }
+}

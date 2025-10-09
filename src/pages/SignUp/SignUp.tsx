@@ -2,14 +2,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Auth.scss';
 
-const Login: React.FC = () => {
+const SignUp: React.FC = () => {
   return (
     <div className="auth-page">
       <div className="auth-container">
         <div className="auth-card">
-          <h1>Welcome Back</h1>
-          <p>Login to access your account and supercharge your brand.</p>
+          <h1>Create Your Account</h1>
+          <p>Join Volt and connect with the gaming world's top brands.</p>
           <form>
+            <div className="form-group">
+              <label htmlFor="name">Full Name</label>
+              <input type="text" id="name" placeholder="Your Name" required />
+            </div>
             <div className="form-group">
               <label htmlFor="email">Email</label>
               <input type="email" id="email" placeholder="you@example.com" required />
@@ -18,13 +22,10 @@ const Login: React.FC = () => {
               <label htmlFor="password">Password</label>
               <input type="password" id="password" placeholder="••••••••" required />
             </div>
-            <div className="form-options">
-              <Link to="/forgot-password">Forgot password?</Link>
-            </div>
-            <button type="submit" className="btn btn-primary">Login</button>
+            <button type="submit" className="btn btn-primary">Create Account</button>
           </form>
           <div className="auth-switch">
-            <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>
+            <p>Already have an account? <Link to="/login">Login</Link></p>
           </div>
         </div>
       </div>
@@ -32,4 +33,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default SignUp;

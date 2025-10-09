@@ -1,12 +1,15 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.scss';
-import About from './pages/About/About';
-import Contact from './pages/Contact/Contact';
-import Features from './pages/Features/Features';
 import Home from './pages/Home/Home';
-import Pricing from './pages/Pricing/Pricing';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
+import Login from './pages/Login/Login';
+import SignUp from './pages/SignUp/SignUp';
+import Brands from './pages/Brands/Brands';
+import GameDevs from './pages/GameDevs/GameDevs';
+import Communities from './pages/Communities/Communities';
+import Company from './pages/Company/Company';
+import Careers from './pages/Careers/Careers';
 
 function App() {
   return (
@@ -16,10 +19,13 @@ function App() {
         <main>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/features" element={<Features />} />
-            <Route path="/pricing" element={<Pricing />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
+            <Route path="/brands" element={<Brands />} />
+            <Route path="/gamedevs" element={<GameDevs />} />
+            <Route path="/communities" element={<Communities />} />
+            <Route path="/company" element={<Company />} />
+            <Route path="/careers" element={<Careers />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
           </Routes>
         </main>
         <Footer />

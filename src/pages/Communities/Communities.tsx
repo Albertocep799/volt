@@ -1,16 +1,10 @@
 import React from 'react';
-import './Communities.scss';
 
 const Communities: React.FC = () => {
   return (
-    <div className="communities-page">
-      <div className="page-header">
-        <h1>For Communities</h1>
-        <p>Monetize your community and reward your members.</p>
-      </div>
-      <div className="page-content">
-        <p>Content for the Communities page.</p>
-      </div>
+    <div style={{ padding: '50px', textAlign: 'center', color: 'white', backgroundColor: 'black' }}>
+      <h1>For Communities</h1>
+      <p>This is the page for communities.</p>
     </div>
   );
 };

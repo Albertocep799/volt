@@ -1,16 +1,10 @@
 import React from 'react';
-import './Brands.scss';
 
 const Brands: React.FC = () => {
   return (
-    <div className="brands-page">
-      <div className="page-header">
-        <h1>For Brands</h1>
-        <p>Reach your target audience through our network of gaming communities.</p>
-      </div>
-      <div className="page-content">
-        <p>Content for the Brands page.</p>
-      </div>
+    <div style={{ padding: '50px', textAlign: 'center', color: 'white', backgroundColor: 'black' }}>
+      <h1>For Brands</h1>
+      <p>This is the page for brands.</p>
     </div>
   );
 };
