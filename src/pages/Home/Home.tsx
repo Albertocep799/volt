@@ -1,9 +1,43 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Home.scss';
 import { FaStar, FaUsers, FaPaintBrush, FaTools } from 'react-icons/fa';
 
+// Custom hook for detecting when an element is in view
+const useInView = (options: IntersectionObserverInit) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsInView(true);
+        if(ref.current) observer.unobserve(ref.current);
+      }
+    }, options);
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, [ref, options]);
+
+  return [ref, isInView];
+};
+
 const Home: React.FC = () => {
+  const [sauceRef, sauceInView] = useInView({ threshold: 0.1 });
+  const [feature1Ref, feature1InView] = useInView({ threshold: 0.2 });
+  const [feature2Ref, feature2InView] = useInView({ threshold: 0.2 });
+  const [creatorsRef, creatorsInView] = useInView({ threshold: 0.2 });
+  const [testimonialsRef, testimonialsInView] = useInView({ threshold: 0.1 });
+  const [ctaRef, ctaInView] = useInView({ threshold: 0.3 });
+
   return (
     <div className="home-page">
       <section className="hero-section">
@@ -17,7 +51,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      <section className="secret-sauce-section">
+      <section ref={sauceRef as React.RefObject<HTMLDivElement>} className={`secret-sauce-section animated-section ${sauceInView ? 'in-view' : ''}`}>
         <div className="secret-sauce-content">
           <div className="secret-sauce-header">
             <h2>Our Secret Sauce 🚀</h2>
@@ -51,7 +85,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      <section className="feature-section">
+      <section ref={feature1Ref as React.RefObject<HTMLDivElement>} className={`feature-section animated-section ${feature1InView ? 'in-view' : ''}`}>
         <div className="feature-content">
           <div className="feature-text">
             <h2>Powerful Campaign Management</h2>
@@ -65,7 +99,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      <section className="feature-section feature-section--reversed">
+      <section ref={feature2Ref as React.RefObject<HTMLDivElement>} className={`feature-section feature-section--reversed animated-section ${feature2InView ? 'in-view' : ''}`}>
         <div className="feature-content">
           <div className="feature-text">
             <h2>The Right Creators for Your Brand</h2>
@@ -79,7 +113,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      <section className="for-creators-section">
+      <section ref={creatorsRef as React.RefObject<HTMLDivElement>} className={`for-creators-section animated-section ${creatorsInView ? 'in-view' : ''}`}>
         <div className="for-creators-content">
           <div className="for-creators-text">
             <h2>Are you a Creator?</h2>
@@ -89,7 +123,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      <section className="testimonials-section">
+      <section ref={testimonialsRef as React.RefObject<HTMLDivElement>} className={`testimonials-section animated-section ${testimonialsInView ? 'in-view' : ''}`}>
         <div className="testimonials-header">
           <h2>Solving <span>huge problems</span> for huge brands</h2>
         </div>
@@ -118,7 +152,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      <section className="cta-section">
+      <section ref={ctaRef as React.RefObject<HTMLDivElement>} className={`cta-section animated-section ${ctaInView ? 'in-view' : ''}`}>
         <div className="cta-content">
           <h2>Ready to get started?</h2>
           <p>Join Volt today and take your brand to the next level.</p>

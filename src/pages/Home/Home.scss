@@ -1,7 +1,31 @@
+/* Keyframes for animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .home-page {
   --text-color: #ffffff;
   --text-color-secondary: #a0a0a0;
   --brand-color: #FCBE03;
+
+  /* General styles for animated sections */
+  .animated-section {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+
+    &.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
   .btn {
     padding: 12px 24px;
@@ -9,13 +33,17 @@
     font-weight: 700;
     text-decoration: none;
     display: inline-block;
-    transition: background-color 0.3s ease;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+
+    &:hover {
+      transform: translateY(-3px);
+    }
 
     &.btn-primary {
       background-color: var(--brand-color);
       color: #000;
       &:hover {
-        background-color: #e0a800; // Darker yellow for hover
+        background-color: #e0a800;
       }
     }
 
@@ -25,6 +53,7 @@
       border: 1px solid var(--text-color-secondary);
       &:hover {
         background-color: rgba(255, 255, 255, 0.1);
+        border-color: #fff;
       }
     }
 
@@ -50,6 +79,7 @@
     text-align: center;
     padding: 120px 40px;
     background-color: #000000;
+    overflow: hidden;
 
     .hero-content {
       max-width: 800px;
@@ -59,15 +89,21 @@
         font-weight: 700;
         color: var(--text-color);
         margin-bottom: 20px;
+        animation: fadeInUp 1s ease-out 0.2s forwards;
+        opacity: 0;
       }
 
       p {
         font-size: 20px;
         color: var(--text-color-secondary);
         margin-bottom: 40px;
+        animation: fadeInUp 1s ease-out 0.5s forwards;
+        opacity: 0;
       }
 
       .hero-actions {
+        animation: fadeInUp 1s ease-out 0.8s forwards;
+        opacity: 0;
         display: flex;
         justify-content: center;
         gap: 20px;
@@ -106,6 +142,7 @@
         margin-bottom: 60px;
 
         .secret-sauce-item {
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
           .item-icon {
             font-size: 32px;
             margin-bottom: 15px;
@@ -120,6 +157,9 @@
           p {
             font-size: 18px;
             line-height: 1.6;
+          }
+          &:hover {
+            transform: translateY(-10px);
           }
         }
       }
@@ -168,6 +208,11 @@
         border-radius: 20px;
         width: 100%;
         height: 400px;
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+        &:hover {
+          transform: scale(1.05);
+          box-shadow: 0 10px 30px rgba(252, 190, 3, 0.1);
+        }
       }
     }
 
@@ -243,6 +288,7 @@
         padding: 40px;
         border-radius: 12px;
         text-align: left;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
 
         p {
           font-size: 18px;
@@ -259,6 +305,10 @@
           small {
             color: var(--text-color-secondary);
           }
+        }
+        &:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
         }
       }
     }

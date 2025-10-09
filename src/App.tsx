@@ -10,6 +10,9 @@ import GameDevs from './pages/GameDevs/GameDevs';
 import Communities from './pages/Communities/Communities';
 import Company from './pages/Company/Company';
 import Careers from './pages/Careers/Careers';
+import TermsOfService from './pages/legal/TermsOfService';
+import PrivacyPolicy from './pages/legal/PrivacyPolicy';
+import ChatWidget from './components/ChatWidget/ChatWidget';
 
 function App() {
   return (
@@ -26,9 +29,12 @@ function App() {
             <Route path="/careers" element={<Careers />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           </Routes>
         </main>
         <Footer />
+        <ChatWidget />
       </div>
     </BrowserRouter>
   );
