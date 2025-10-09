@@ -17,10 +17,10 @@ const Header: React.FC = () => {
       </button>
       <nav className="main-nav">
         <ul>
-          <li><NavLink to="/features" activeClassName="active" onClick={() => setNavOpen(false)}>Features</NavLink></li>
-          <li><NavLink to="/how-it-works" activeClassName="active" onClick={() => setNavOpen(false)}>How It Works</NavLink></li>
-          <li><NavLink to="/testimonials" activeClassName="active" onClick={() => setNavOpen(false)}>Testimonials</NavLink></li>
-          <li><NavLink to="/faq" activeClassName="active" onClick={() => setNavOpen(false)}>FAQ</NavLink></li>
+          <li><NavLink to="/features" className={({ isActive }) => isActive ? 'active' : ''} onClick={() => setNavOpen(false)}>Features</NavLink></li>
+          <li><NavLink to="/how-it-works" className={({ isActive }) => isActive ? 'active' : ''} onClick={() => setNavOpen(false)}>How It Works</NavLink></li>
+          <li><NavLink to="/testimonials" className={({ isActive }) => isActive ? 'active' : ''} onClick={() => setNavOpen(false)}>Testimonials</NavLink></li>
+          <li><NavLink to="/faq" className={({ isActive }) => isActive ? 'active' : ''} onClick={() => setNavOpen(false)}>FAQ</NavLink></li>
         </ul>
       </nav>
       <div className="actions">
