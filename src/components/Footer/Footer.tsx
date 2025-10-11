@@ -1,25 +1,33 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaDiscord, FaTwitter, FaYoutube } from 'react-icons/fa';
+import CustomSelect from '../CustomSelect/CustomSelect'; // Import the new component
 import './Footer.scss';
 
 const Footer: React.FC = () => {
+  // Define the language options for the custom select
+  const languageOptions = [
+    { value: 'en', label: 'English' },
+    { value: 'es', label: 'Español' },
+    { value: 'fr', label: 'Français' },
+    { value: 'de', label: 'Deutsch' },
+    { value: 'da', label: 'Dansk' },
+    { value: 'cs', label: 'Čeština' },
+  ];
+
   return (
     <footer className="footer">
       <div className="footer-container">
         <div className="footer-column footer-brand">
           <h3>Volt</h3>
           <p>Supercharge your brand's reach in the gaming universe.</p>
-          <div className="language-container">
-            <label htmlFor="language-select">Language</label>
-            <div className="language-selector">
-              <select id="language-select">
-                <option value="en">English</option>
-                <option value="es">Español</option>
-                <option value="fr">Français</option>
-              </select>
-            </div>
-          </div>
+          
+          {/* Replace the old select with the new CustomSelect component */}
+          <CustomSelect 
+            label="Language" 
+            options={languageOptions} 
+            defaultSelected={languageOptions[0]}
+          />
+
           <div className="social-icons">
             <a href="#"><FaDiscord /></a>
             <a href="#"><FaTwitter /></a>

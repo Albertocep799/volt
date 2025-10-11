@@ -1,177 +1,110 @@
+/*
+  ChatWidget SCSS - V3 (Alignment Fix)
+  - Fixes the alignment issue where the chat window didn't open from the launcher button's position.
+  - Both launcher and window are now absolutely positioned within the container for a seamless transition.
+*/
+
+:root {
+  --chat-widget-size: 80px;
+  --chat-window-width: 370px;
+  --chat-window-height: 550px;
+  --chat-bg-grey: #f0f0f0;
+  --chat-header-bg: #1D1D1D;
+  --chat-bubble-bg: #FFFFFF;
+  --chat-bubble-text: #333333;
+  --chat-input-bg: #FFFFFF;
+}
+
+/* The main container is now a fixed anchor point */
 .chat-widget-container {
   position: fixed;
   bottom: 30px;
   right: 30px;
   z-index: 1000;
-
-  .chat-toggle-button {
-    background-color: #FCBE03; // Brand color
-    color: #000;
-    border: none;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    font-size: 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease, background-color 0.3s ease;
-
-    &:hover {
-      transform: scale(1.1);
-      background-color: #e0a800;
-    }
-  }
-
-  .chat-window {
-    position: absolute;
-    bottom: 80px;
-    right: 0;
-    width: 370px;
-    background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    animation: slideIn 0.4s ease-out;
-    transform-origin: bottom right;
-
-    .chat-header {
-        padding: 20px;
-        background: linear-gradient(135deg, #f8a52d, #f9c54a);
-        color: #000;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-
-      .avatar-group {
-        display: flex;
-        .avatar {
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          border: 2px solid #fff;
-          margin-left: -15px;
-          &:first-child {
-            margin-left: 0;
-          }
-        }
-      }
-
-      .header-text {
-        h3 {
-          font-weight: 700;
-          font-size: 18px;
-          margin: 0;
-        }
-        p {
-          font-size: 14px;
-          margin: 0;
-          opacity: 0.9;
-        }
-      }
-    }
-
-    .chat-body {
-      padding: 20px;
-      flex-grow: 1;
-      background-color: #f9f9f9;
-      min-height: 150px;
-
-      .message {
-        display: flex;
-        gap: 12px;
-        align-items: flex-start;
-        margin-bottom: 20px;
-
-        .avatar-group {
-            display: flex;
-            .avatar {
-              width: 35px;
-              height: 35px;
-              border-radius: 50%;
-              border: 2px solid #fff;
-              margin-left: -12px;
-              &:first-child {
-                margin-left: 0;
-              }
-            }
-        }
-
-        p {
-          background-color: #eef2f7;
-          color: #333;
-          padding: 15px;
-          border-radius: 0 12px 12px 12px;
-          margin: 0;
-          font-size: 15px;
-          line-height: 1.6;
-          max-width: 80%;
-        }
-      }
-    }
-
-    .chat-footer {
-      display: flex;
-      align-items: center;
-      padding: 15px 20px;
-      background-color: #fff;
-      border-top: 1px solid #eee;
-
-      input {
-        flex-grow: 1;
-        border: none;
-        outline: none;
-        font-size: 15px;
-        background-color: transparent;
-        &::placeholder {
-            color: #aaa;
-        }
-      }
-
-      .send-button {
-        background: none;
-        border: none;
-        color: #aaa;
-        font-size: 20px;
-        cursor: pointer;
-        transition: color 0.3s ease;
-
-        &:hover {
-            color: #FCBE03;
-        }
-      }
-    }
-  }
+  /* These dimensions create a context for absolute children */
+  width: var(--chat-window-width);
+  height: var(--chat-window-height);
+  /* The container itself shouldn't capture clicks */
+  pointer-events: none;
 }
 
-// Animation for chat window
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+.launcher-button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: var(--chat-widget-size);
+  height: var(--chat-widget-size);
+  background-color: var(--brand-color);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  pointer-events: auto; /* Re-enable clicks for the button */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease-out, opacity 0.3s ease;
+  z-index: 1001; /* Ensures it's on top when closed */
+
+  .launcher-icon { font-size: 32px; color: var(--dark-bg-color); }
+  &:hover { transform: scale(1.1); }
 }
 
-// When chat is closing
-.chat-widget-container.open .chat-window {
-  animation: slideOut 0.4s ease-out forwards;
+.chat-widget-container.open .launcher-button {
+  opacity: 0;
+  transform: scale(0.8);
+  pointer-events: none;
 }
 
-@keyframes slideOut {
-  from {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(20px) scale(0.95);
+.chat-launcher-window {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: var(--chat-window-width);
+  height: var(--chat-window-height);
+  border-radius: 20px; 
+  border: 3px solid var(--brand-color);
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  transform-origin: bottom right;
+  transform: scale(0);
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.chat-widget-container.open .chat-launcher-window {
+  transform: scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Visual styles remain unchanged from V2 */
+.chat-content { display: flex; flex-direction: column; height: 100%; }
+
+.chat-header {
+  display: flex; align-items: center; padding: 15px 20px;
+  background-color: var(--chat-header-bg); color: #fff;
+  .brand-icon { font-size: 24px; color: var(--brand-color); margin-right: 15px; }
+  .header-text { flex-grow: 1; h3 { font-size: 18px; font-weight: 600; margin: 0; } p { font-size: 14px; color: #a0a0a0; margin: 0; } }
+  .close-chat-button { background: none; border: none; color: #fff; font-size: 20px; cursor: pointer; }
+}
+
+.chat-body { flex-grow: 1; padding: 20px; overflow-y: auto; background-color: #6c6c6c; }
+
+.message { display: flex; margin-bottom: 20px; align-items: flex-start; gap: 15px; }
+.message-reply {
+  .brand-icon-reply { font-size: 20px; color: #888888; padding-top: 5px; }
+  p { background-color: var(--chat-bubble-bg); color: var(--chat-bubble-text); padding: 15px; border-radius: 12px; max-width: 80%; line-height: 1.5; margin: 0; }
+}
+
+.chat-footer {
+  display: flex; align-items: center; padding: 10px 20px; background-color: var(--chat-input-bg);
+  input[type="text"] { flex-grow: 1; border: none; background: transparent; padding: 10px 0; font-size: 16px; &:focus { outline: none; } }
+  .send-button {
+    background-color: var(--brand-color); border: none; border-radius: 50%; width: 44px; height: 44px;
+    display: flex; justify-content: center; align-items: center; cursor: pointer; color: white;
+    font-size: 18px; margin-left: 10px; transition: background-color 0.2s ease;
+    &:hover { background-color: darken(#FCBE03, 10%); }
   }
 }

@@ -1,32 +1,98 @@
+/*
+  Hero SCSS - V2 (With Typeform Integration)
+  - Styles the main hero section content.
+  - Implements animations for showing an embedded Typeform.
+*/
+
 .hero {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
   text-align: center;
-  color: #FCBE03; // Volt yellow
+  padding: 120px 2rem;
+  background-color: var(--dark-bg-color);
+  color: var(--light-text-color);
 
   .hero-content {
     max-width: 800px;
+    margin: 0 auto;
 
     h1 {
-      font-size: 4rem;
-      margin-bottom: 1rem;
+      font-size: 56px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 20px;
+
+      .highlight {
+        color: var(--brand-color);
+      }
     }
 
     p {
-      font-size: 1.5rem;
-      margin-bottom: 2rem;
+      font-size: 20px;
+      color: var(--secondary-text-color);
+      max-width: 650px;
+      margin: 0 auto 40px;
     }
+  }
+}
 
-    .btn-primary {
-      background-color: #FCBE03;
-      color: #000000;
-      padding: 1rem 2rem;
-      font-size: 1.2rem;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.btn {
+  padding: 15px 35px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+}
+
+.btn-primary {
+  background-color: var(--brand-color);
+  color: #111;
+  border: 2px solid var(--brand-color);
+  &:hover { background-color: #ffca28; border-color: #ffca28; }
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--light-text-color);
+  border: 2px solid #555;
+  &:hover { background-color: #222; border-color: #777; }
+}
+
+/* Typeform Container Styles */
+.typeform-container {
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  transition: height 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease 0.2s;
+
+  iframe {
+    border: 1px solid #444; // Subtle border for the iframe
+  }
+}
+
+/* --- Active State --- */
+.hero.typeform-active {
+  // Hide the buttons
+  .hero-actions {
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none; // Disable clicks during transition
+    height: 0;
+    margin: 0; // Collapse margin
+  }
+
+  // Show the Typeform
+  .typeform-container {
+    height: 500px; // The final height of the form
+    opacity: 1;
+    margin-top: -30px; // Adjust to make the transition smoother
   }
 }

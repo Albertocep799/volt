@@ -1,0 +1,90 @@
+/*
+  UserDropdown SCSS - V3 (Final Polish)
+  - This version perfectly matches the spacing, icon alignment, and border-radius from the reference image.
+*/
+
+@keyframes fadeInScaleUp {
+  from { opacity: 0; transform: scale(0.95) translateY(-5px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+:root {
+  --brand-color: #FCBE03;
+  --dropdown-bg: #1C1C1F;
+  --dropdown-text-primary: #E0E0E0;
+  --dropdown-text-secondary: #888;
+  --dropdown-hover-bg: #2a2a2e;
+  --logout-color: #E53935;
+  --separator-color: #333;
+}
+
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 15px);
+  right: 0;
+  background-color: var(--dropdown-bg);
+  border-radius: 12px; // Matched to the image
+  padding: 8px;
+  min-width: 220px; // Fine-tuned width
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 1100;
+  transform-origin: top right;
+  animation: fadeInScaleUp 0.15s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+
+  ul { list-style: none; margin: 0; padding: 0; }
+
+  li {
+    border-radius: 6px; // Slightly less rounded for items
+    transition: background-color 0.2s ease;
+
+    &:not(.separator):hover { background-color: var(--dropdown-hover-bg); }
+
+    // Use Link for router navigation
+    a, .logout-item {
+      display: flex;
+      align-items: center; // This is key for vertical alignment
+      gap: 16px; // Perfect gap from image
+      padding: 12px;
+      width: 100%;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 15px; // Fine-tuned font size
+      line-height: 1.4;
+      color: var(--dropdown-text-primary);
+    }
+
+    .logout-item { 
+      cursor: pointer; 
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+    }
+
+    svg {
+      font-size: 19px; // Fine-tuned icon size
+      color: var(--dropdown-text-secondary);
+      width: 20px;
+      flex-shrink: 0;
+    }
+  }
+
+  .separator {
+    height: 1px;
+    background-color: var(--separator-color);
+    margin: 6px 4px;
+  }
+
+  // Specific color overrides
+  li a[href="/stats"] {
+    span { color: var(--brand-color); }
+    svg { color: var(--brand-color); }
+  }
+
+  .logout-item {
+    color: var(--logout-color);
+    font-weight: 600;
+    svg { color: var(--logout-color); }
+  }
+}

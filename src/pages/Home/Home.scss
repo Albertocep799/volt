@@ -10,6 +10,19 @@
   }
 }
 
+/* New animation for the icons */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .home-page {
   --text-color: #ffffff;
   --text-color-secondary: #a0a0a0;
@@ -65,7 +78,7 @@
       border-radius: 50px;
       text-decoration: none;
     }
-
+    
     &.btn-lg {
       font-size: 18px;
       padding: 15px 30px;
@@ -79,10 +92,16 @@
     text-align: center;
     padding: 120px 40px;
     background-color: #000000;
-    overflow: hidden;
+    overflow: visible;
+    position: relative;
 
     .hero-content {
       max-width: 800px;
+      width: 100%;
+      
+      .hero-text-content {
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
 
       h1 {
         font-size: 56px;
@@ -99,14 +118,18 @@
         margin-bottom: 40px;
         animation: fadeInUp 1s ease-out 0.5s forwards;
         opacity: 0;
+        transition: margin-bottom 0.4s ease;
       }
 
       .hero-actions {
         animation: fadeInUp 1s ease-out 0.8s forwards;
-        opacity: 0;
+        opacity: 1; // Start visible
         display: flex;
         justify-content: center;
         gap: 20px;
+        transition: opacity 0.3s ease, height 0.4s ease, padding 0.4s ease, margin 0.4s ease;
+        overflow: hidden;
+        height: auto; // Start at auto height
       }
     }
   }
@@ -123,7 +146,7 @@
       .secret-sauce-header {
         text-align: left;
         margin-bottom: 60px;
-
+        
         h2 {
           font-size: 70px;
           font-weight: 700;
@@ -138,28 +161,35 @@
       .secret-sauce-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 40px;
+        gap: 30px; 
         margin-bottom: 60px;
-
+        
         .secret-sauce-item {
+          background-color: rgba(0, 0, 0, 0.05);
+          padding: 30px;
+          border-radius: 12px; 
           transition: transform 0.3s ease, box-shadow 0.3s ease;
+
           .item-icon {
             font-size: 32px;
-            margin-bottom: 15px;
+            margin-bottom: 20px; 
+            display: inline-block; 
+            animation: pulse 2s ease-in-out infinite 1s;
           }
 
           h3 {
-            font-size: 24px;
+            font-size: 22px; 
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
           }
 
           p {
-            font-size: 18px;
+            font-size: 17px; 
             line-height: 1.6;
           }
           &:hover {
             transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
           }
         }
       }
@@ -289,7 +319,6 @@
         border-radius: 12px;
         text-align: left;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
-
         p {
           font-size: 18px;
           line-height: 1.7;
@@ -336,5 +365,54 @@
         margin-bottom: 40px;
       }
     }
+  }
+}
+
+/* Typeform Embed Styles - FINAL with Animation */
+.typeform-embed-container {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  position: relative;
+  transition: max-height 0.8s ease-in-out, opacity 0.4s ease-out 0.2s, margin-top 0.5s ease;
+}
+
+.close-typeform-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #2b2b2b;
+  color: #a0a0a0;
+  border: 1px solid #444;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 28px;
+  text-align: center;
+  cursor: pointer;
+  z-index: 101;
+  transition: all 0.2s ease;
+  &:hover {
+      background: #444;
+      color: #fff;
+      transform: scale(1.1);
+  }
+}
+
+.hero-section.typeform-active {
+  .hero-actions {
+    opacity: 0;
+    height: 0;
+    padding: 0;
+    margin: 0;
+    pointer-events: none;
+  }
+
+  .typeform-embed-container {
+    margin-top: 30px;
+    max-height: 800px; /* Large enough to never clip the form */
+    opacity: 1;
   }
 }

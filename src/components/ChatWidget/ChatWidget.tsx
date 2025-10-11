@@ -1,10 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ChatWidget.scss';
-import { FaCommentDots, FaTimes, FaPaperPlane } from 'react-icons/fa';
-
-// Using placeholder avatars to prevent build errors
-const avatar1 = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=100&q=80";
-const avatar2 = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=100&q=80";
+import { FaBolt, FaTimes, FaPaperPlane } from 'react-icons/fa';
 
 const ChatWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,41 +9,50 @@ const ChatWidget: React.FC = () => {
     setIsOpen(!isOpen);
   };
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('chat-is-open');
+    } else {
+      document.body.classList.remove('chat-is-open');
+    }
+  }, [isOpen]);
+
   return (
     <div className={`chat-widget-container ${isOpen ? 'open' : ''}`}>
-      <button className="chat-toggle-button" onClick={toggleChat}>
-        {isOpen ? <FaTimes /> : <FaCommentDots />}
-      </button>
-
-      {isOpen && (
-        <div className="chat-window">
+      {/* The chat window, which scales up and down */}
+      <div className="chat-launcher-window">
+        <div className="chat-content">
           <div className="chat-header">
-            <div className="avatar-group">
-                <img src={avatar1} alt="Support Team Member 1" className="avatar" />
-                <img src={avatar2} alt="Support Team Member 2" className="avatar" />
+            <div className="brand-icon">
+              <FaBolt />
             </div>
             <div className="header-text">
-              <h3>Amanda, Logan</h3>
-              <p>We typically reply in a few minutes</p>
+              <h3>Volt Support</h3>
+              <p>Ask us anything, we'll reply quickly.</p>
             </div>
+            <button className="close-chat-button" onClick={toggleChat}><FaTimes /></button>
           </div>
 
           <div className="chat-body">
-            <div className="message message-reply">
-              <div className="avatar-group">
-                <img src={avatar1} alt="Support Team Member 1" className="avatar" />
-                <img src={avatar2} alt="Support Team Member 2" className="avatar" />
+              <div className="message message-reply">
+              <div className="brand-icon-reply">
+                <FaBolt />
               </div>
-              <p>Got any questions? Drop them here and one of the team can help.</p>
+              <p>Hey there! Got any questions about our campaigns or communities? Drop them here.</p>
             </div>
           </div>
 
           <div className="chat-footer">
-            <input type="text" placeholder="Ask me anything..." />
+            <input type="text" placeholder="Type your message" />
             <button className="send-button"><FaPaperPlane/></button>
           </div>
         </div>
-      )}
+      </div>
+
+      {/* The launcher button - it fades in/out independently */}
+      <div className="launcher-button" onClick={toggleChat}>
+          <FaBolt className="launcher-icon" />
+      </div>
     </div>
   );
 };
