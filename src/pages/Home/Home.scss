@@ -92,15 +92,16 @@
     text-align: center;
     padding: 120px 40px;
     background-color: #000000;
-    overflow: visible;
+    overflow: hidden; /* Changed from visible to hidden */
     position: relative;
+    transition: padding 0.5s ease;
 
     .hero-content {
       max-width: 800px;
       width: 100%;
       
       .hero-text-content {
-        transition: opacity 0.3s ease, transform 0.3s ease;
+        transition: opacity 0.4s ease, transform 0.4s ease;
       }
 
       h1 {
@@ -123,13 +124,11 @@
 
       .hero-actions {
         animation: fadeInUp 1s ease-out 0.8s forwards;
-        opacity: 1; // Start visible
+        opacity: 1;
         display: flex;
         justify-content: center;
         gap: 20px;
-        transition: opacity 0.3s ease, height 0.4s ease, padding 0.4s ease, margin 0.4s ease;
-        overflow: hidden;
-        height: auto; // Start at auto height
+        transition: opacity 0.4s ease;
       }
     }
   }
@@ -368,19 +367,26 @@
   }
 }
 
-/* Typeform Embed Styles - FINAL with Animation */
+/* --- Typeform Embed Styles --- */
+
+/* Hide the container by default */
 .typeform-embed-container {
-  max-height: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 760px; /* Or any width you prefer */
+  height: 0;
   opacity: 0;
-  overflow: hidden;
-  position: relative;
-  transition: max-height 0.8s ease-in-out, opacity 0.4s ease-out 0.2s, margin-top 0.5s ease;
+  pointer-events: none;
+  transition: opacity 0.4s ease-out, height 0s ease 0.4s; /* Delay height transition */
 }
 
 .close-typeform-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: -15px;
+  right: -15px;
   background: #2b2b2b;
   color: #a0a0a0;
   border: 1px solid #444;
@@ -401,18 +407,22 @@
   }
 }
 
+
+/* Styles when Typeform is active */
 .hero-section.typeform-active {
+  
+  /* Fade out the hero content */
+  .hero-text-content,
   .hero-actions {
     opacity: 0;
-    height: 0;
-    padding: 0;
-    margin: 0;
     pointer-events: none;
   }
 
+  /* Make the Typeform container visible */
   .typeform-embed-container {
-    margin-top: 30px;
-    max-height: 800px; /* Large enough to never clip the form */
     opacity: 1;
+    height: 500px; /* The height of your form */
+    pointer-events: auto;
+    transition: opacity 0.4s ease-out 0.2s; /* Fade in after a short delay */
   }
 }
