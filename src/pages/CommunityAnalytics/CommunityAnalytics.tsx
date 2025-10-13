@@ -76,7 +76,7 @@ const CommunityAnalytics: React.FC = () => {
             </tbody>
           </table>
         </div>
-        <div className="chart-card"><h3>Conversions by Platform</h3><ResponsiveContainer width="100%" height={300}><PieChart><Pie data={data.adPerformance.conversionsByPlatform} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={120} label>{data.adPerformance.conversionsByPlatform.map((e, i) => <Cell key={`cell-${i}`} fill={e.color} />)}</Pie><Tooltip /><Legend /></PieChart></ResponsiveContainer></div>
+        <div className="chart-card"><h3>Conversions by Platform</h3><ResponsiveContainer width="100%" height={300}><PieChart><Pie data={data.adPerformance.conversionsByPlatform as any[]} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={120} label>{data.adPerformance.conversionsByPlatform.map((e, i) => <Cell key={`cell-${i}`} fill={e.color} />)}</Pie><Tooltip /><Legend /></PieChart></ResponsiveContainer></div>
       </section>
     </>
   );
@@ -84,8 +84,8 @@ const CommunityAnalytics: React.FC = () => {
   const renderAudienceInsightsTab = () => (
     <>
       <section className="charts-grid">
-        <div className="chart-card"><h3>Country Demographics</h3><ResponsiveContainer width="100%" height={300}><PieChart><Pie data={data.audience.demographics} dataKey="percentage" nameKey="country" cx="50%" cy="50%" outerRadius={100} label>{data.audience.demographics.map((e, i) => <Cell key={`cell-${i}`} fill={e.color} />)}</Pie><Tooltip formatter={(v) => `${v}%`} /><Legend /></PieChart></ResponsiveContainer></div>
-        <div className="chart-card"><h3>New vs. Returning Users</h3><ResponsiveContainer width="100%" height={300}><PieChart><Pie data={data.audience.newVsReturning} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={100} label>{data.audience.newVsReturning.map((e, i) => <Cell key={`cell-${i}`} fill={e.color} />)}</Pie><Tooltip formatter={(v) => `${v}%`} /></PieChart></ResponsiveContainer></div>
+        <div className="chart-card"><h3>Country Demographics</h3><ResponsiveContainer width="100%" height={300}><PieChart><Pie data={data.audience.demographics as any[]} dataKey="percentage" nameKey="country" cx="50%" cy="50%" outerRadius={100} label>{data.audience.demographics.map((e, i) => <Cell key={`cell-${i}`} fill={e.color} />)}</Pie><Tooltip formatter={(v) => `${v}%`} /><Legend /></PieChart></ResponsiveContainer></div>
+        <div className="chart-card"><h3>New vs. Returning Users</h3><ResponsiveContainer width="100%" height={300}><PieChart><Pie data={data.audience.newVsReturning as any[]} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={100} label>{data.audience.newVsReturning.map((e, i) => <Cell key={`cell-${i}`} fill={e.color} />)}</Pie><Tooltip formatter={(v) => `${v}%`} /></PieChart></ResponsiveContainer></div>
         <div className="chart-card full-width"><h3>Peak Activity Hours</h3><ResponsiveContainer width="100%" height={300}><BarChart data={data.audience.activityHours}><CartesianGrid strokeDasharray="3 3" stroke="#2e2e2e" /><XAxis dataKey="hour" stroke="#a0a0a0" /><YAxis stroke="#a0a0a0" /><Tooltip contentStyle={{ backgroundColor: '#1c1c1c'}} cursor={{fill: 'rgba(252, 190, 3, 0.1)'}} /><Bar dataKey="activity" name="User Activity" fill="#FCBE03" /></BarChart></ResponsiveContainer></div>
       </section>
       <section className="table-card full-width">
@@ -166,7 +166,7 @@ const CommunityAnalytics: React.FC = () => {
       <Link to="/dashboard" className="back-link"><FaArrowLeft /> Back to Dashboard</Link>
 
       <header className="analytics-header-redesigned">
-        <img src={community.icon} alt={`${community.name} icon`} className="community-icon" />
+        <div className="community-icon" />
         <div className="community-info">
             <h1>{community.name}</h1>
             <p>Community Insights</p>

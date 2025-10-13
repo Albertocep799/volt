@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Dashboard.scss';
 import { FaSort } from 'react-icons/fa';
+import AddCommunityPopup from '../../components/AddCommunityPopup/AddCommunityPopup';
 import {
   voltUser,
   voltCommunities,
@@ -17,6 +18,16 @@ const statusStyles: { [key: string]: string } = {
 };
 
 const Dashboard: React.FC = () => {
+  const [isPopupOpen, setPopupOpen] = useState(false);
+
+  const handleAddCommunityClick = () => {
+    setPopupOpen(true);
+  };
+
+  const handleClosePopup = () => {
+    setPopupOpen(false);
+  };
+
   return (
     <div className="dashboard-container">
       <header className="dashboard-header">
@@ -27,7 +38,7 @@ const Dashboard: React.FC = () => {
       <section className="dashboard-section communities-section">
         <div className="section-header">
           <h2>My Communities</h2>
-          <button className="btn-add-community">Add Community</button>
+          <button className="btn-add-community" onClick={handleAddCommunityClick}>Add Community</button>
         </div>
         <div className="communities-grid">
           {voltCommunities.map((community: Community) => (
@@ -83,6 +94,8 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {isPopupOpen && <AddCommunityPopup onClose={handleClosePopup} />}
       
       {/* El ChatWidget ya no es necesario aquí, se gestiona desde App.tsx */}
     </div>

@@ -31,6 +31,12 @@ const DateFilter: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    if (!isCalendarOpen && startDate && !endDate) {
+      setEndDate(startDate);
+    }
+  }, [isCalendarOpen, startDate, endDate]);
+
   const handleIntervalSelect = (option: string) => {
     setInterval(option);
     setIntervalOpen(false);
@@ -134,13 +140,13 @@ const DateFilter: React.FC = () => {
   const renderMonthsView = () => {
     const months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
     return (
-        <div className="calendar-grid months-grid">
-            {months.map((month, index) => (
-                <div key={index} className="calendar-cell month-cell" onClick={() => handleMonthSelect(index)}>
-                    {month}
-                </div>
-            ))}
-        </div>
+      <div className="calendar-grid months-grid">
+        {months.map((month, index) => (
+          <div key={index} className="calendar-cell month-cell" onClick={() => handleMonthSelect(index)}>
+            {month}
+          </div>
+        ))}
+      </div>
     );
   };
 
@@ -197,7 +203,10 @@ const DateFilter: React.FC = () => {
       <div className="filter-group">
         <label>Date Range</label>
         <div className="date-range-picker" onClick={() => setCalendarOpen(!isCalendarOpen)}>
-          <span>{`${formatDate(startDate)} - ${formatDate(endDate)}`}</span>
+          <span>
+            {startDate && formatDate(startDate)}
+            {endDate && startDate && startDate.getTime() !== endDate.getTime() ? ` - ${formatDate(endDate)}` : ''}
+          </span>
           <FaCalendarAlt className="calendar-icon" />
           {isCalendarOpen && renderCalendar()}
         </div>

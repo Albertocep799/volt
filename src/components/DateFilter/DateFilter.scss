@@ -145,6 +145,17 @@
         border-left: 1px solid #3a3d42;
       }
 
+      &.months-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.5rem;
+        margin-top: 1rem;
+        .month-cell {
+          height: 50px;
+          border-radius: 4px;
+          &:hover { background-color: #40444b; }
+        }
+      }
+
       .calendar-cell {
         color: #b9bbbe;
         text-align: center;
@@ -164,22 +175,14 @@
             cursor: default; 
         }
 
-        &:not(.disabled):not(.in-range):hover .day-number::after {
-          content: '';
-          position: absolute;
-          bottom: -8px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 70%;
-          height: 2px;
-          background-color: #5865f2;
-          border-radius: 1px;
+        &:not(.disabled):not(.in-range):hover {
+          box-shadow: inset 0 -3px 0 #5865f2;
         }
 
         &.in-range {
           background-color: #404791;
           color: #fff;
-          border-radius: 0; // Ranges have sharp corners
+          border-radius: 0;
         }
         
         &.start-date, &.end-date {
@@ -197,7 +200,6 @@
             border-bottom-right-radius: 4px;
         }
 
-        // A single day selection should be fully rounded
         &.start-date.end-date {
             border-radius: 4px;
         }
