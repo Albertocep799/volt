@@ -1,119 +1,188 @@
-/*
-  Dashboard SCSS - V2 (Campaign & Community View)
-  - Implements the layout from the user's screenshot, including sections for communities and campaigns.
-*/
-
-:root {
-  --dashboard-bg: #121212;
-  --section-bg: #1A1A1A; // Slightly lighter than page background
-  --card-border: #2C2C2C;
-  --text-primary: #E0E0E0;
-  --text-secondary: #a0a0a0;
-  --brand-color: #FCBE03; // Volt Yellow for the button
-}
+/* Dashboard Styles */
+$dashboard-bg: #121212;
+$primary-text-color: #ffffff;
+$secondary-text-color: #a0a0a0;
+$accent-color: #FCBE03;
+$card-bg: #1c1c1c;
+$border-color: #2e2e2e;
+$active-color: #2dd36f; // Green for active status
 
 .dashboard-container {
-  padding: 30px 5%;
-  background-color: var(--dashboard-bg);
-  color: var(--text-primary);
-  min-height: calc(100vh - 80px);
-  animation: fadeIn 0.4s ease-in-out;
-}
+  background-color: $dashboard-bg;
+  color: $primary-text-color;
+  padding: 40px;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.dashboard-header {
-  margin-bottom: 40px;
-  h1 {
-    font-size: 28px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-}
-
-// Shared styles for sections like "My Communities" and "My Campaigns"
-.dashboard-section {
-  background-color: var(--section-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 12px;
-  margin-bottom: 40px;
-
-  .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 25px;
-    border-bottom: 1px solid var(--card-border);
-    h2 {
-      font-size: 20px;
-      font-weight: 600;
+  a {
+    color: $accent-color;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
     }
   }
 
-  .section-content {
-    padding: 25px;
-    min-height: 150px; // Give some height to the empty state
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  .dashboard-header {
+    margin-bottom: 40px;
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+    }
   }
-}
 
-.btn-add-community {
-  background-color: var(--brand-color);
-  color: #121212;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+  .dashboard-section {
+    margin-bottom: 40px;
 
-  &:hover {
-    /* Fix: Use the hex value directly so Sass can compile it */
-    background-color: darken(#FCBE03, 5%);
-  }
-}
-
-// Specific styles for the campaigns table
-.campaigns-table {
-  padding: 0;
-  flex-direction: column;
-  align-items: stretch;
-
-  .table-header {
-    display: grid;
-    grid-template-columns: repeat(9, 1fr);
-    padding: 20px 25px;
-    border-bottom: 1px solid var(--card-border);
-    color: var(--text-secondary);
-    font-size: 14px;
-    font-weight: 500;
-    gap: 15px;
-
-    span {
+    .section-header {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 5px;
+      margin-bottom: 20px;
+
+      h2 {
+        font-size: 22px;
+        font-weight: 600;
+      }
+
+      .btn-add-community {
+        background-color: $accent-color;
+        color: #000;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: darken($accent-color, 10%);
+        }
+      }
     }
   }
 
-  .table-body {
-    padding: 25px;
-    min-height: 150px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-}
+  .communities-section {
+    .communities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
 
-.empty-state {
-  color: var(--text-secondary);
-  font-size: 16px;
+      .community-card {
+        background-color: $card-bg;
+        border: 1px solid $border-color;
+        border-radius: 12px;
+        padding: 24px;
+        text-align: left;
+
+        .community-icon {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background-color: $accent-color;
+          margin-bottom: 16px;
+        }
+
+        h3 {
+          font-size: 18px;
+          font-weight: 600;
+          margin-bottom: 4px;
+        }
+
+        p {
+          color: $secondary-text-color;
+          font-size: 14px;
+          margin-bottom: 20px;
+        }
+
+        .btn-manage {
+          width: 100%;
+          background-color: $accent-color;
+          color: #000;
+          border: none;
+          padding: 12px;
+          border-radius: 8px;
+          font-weight: 700;
+          cursor: pointer;
+          transition: background-color 0.2s;
+
+          &:hover {
+            background-color: darken($accent-color, 10%);
+          }
+        }
+      }
+    }
+  }
+
+  .campaigns-table {
+    background-color: $card-bg;
+    border: 1px solid $border-color;
+    border-radius: 12px;
+    overflow-x: auto;
+
+    // Ajuste de columnas para eliminar el chat
+    .table-header, .table-row {
+      display: grid;
+      grid-template-columns: 2.5fr 1fr 1.5fr 1fr 1.5fr 1fr 1fr 1fr;
+      align-items: center;
+      padding: 16px 24px;
+      border-bottom: 1px solid $border-color;
+      min-width: 1100px;
+    }
+
+    .table-header {
+      color: $secondary-text-color;
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 600;
+
+      span {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+    }
+
+    .table-body {
+      .table-row {
+        font-size: 14px;
+
+        &:last-child {
+          border-bottom: none;
+        }
+        
+        .status-cell {
+            display: flex;
+        }
+
+        .status-badge {
+          padding: 6px 12px;
+          border-radius: 20px;
+          font-weight: 600;
+          text-transform: capitalize;
+          font-size: 12px;
+          display: inline-block;
+          
+          &.status-pending-approval {
+            background-color: rgba($accent-color, 0.2);
+            color: $accent-color;
+            border: 1px solid $accent-color;
+          }
+          
+          &.status-pending {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: $primary-text-color;
+            border: 1px solid $secondary-text-color;
+          }
+
+          &.status-active {
+            background-color: rgba($active-color, 0.2);
+            color: $active-color;
+            border: 1px solid $active-color;
+          }
+        }
+      }
+    }
+  }
+
+  // Se eliminaron los estilos de .floating-chat-btn
 }

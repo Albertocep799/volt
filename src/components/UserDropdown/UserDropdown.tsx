@@ -1,34 +1,38 @@
 import React from 'react';
-import './UserDropdown.scss';
 import { Link } from 'react-router-dom';
-import { FaChartBar, FaTachometerAlt } from 'react-icons/fa';
-import { HiOutlineLogout } from 'react-icons/hi';
+import './UserDropdown.scss';
+import { FaUserCircle, FaTachometerAlt, FaChartBar, FaSignOutAlt } from 'react-icons/fa';
 
 interface UserDropdownProps {
-  logout: () => void;
+  onLogout: () => void;
 }
 
-const UserDropdown: React.FC<UserDropdownProps> = ({ logout }) => {
+const UserDropdown: React.FC<UserDropdownProps> = ({ onLogout }) => {
   return (
-    <div className="user-dropdown">
-      <ul>
+    <div className="user-dropdown-container">
+      <ul className="dropdown-menu">
         <li>
-          {/* The link now correctly points to the new dashboard page */}
+          <Link to="/profile">
+            <FaUserCircle />
+            <span>Profile</span>
+          </Link>
+        </li>
+        <li>
           <Link to="/dashboard">
             <FaTachometerAlt />
-            <span>Panel <br/>de control</span>
+            <span>Dashboard</span>
           </Link>
         </li>
         <li>
-          <Link to="/stats">
+          <Link to="/statistic">
             <FaChartBar />
-            <span>Estadísticas</span>
+            <span>Statistics</span>
           </Link>
         </li>
-        <li className="separator"></li> 
-        <li className="logout-item" onClick={logout}>
-            <HiOutlineLogout />
-            <span>Cerrar sesión</span>
+        <div className="separator"></div>
+        <li onClick={onLogout} className="logout-item">
+            <FaSignOutAlt />
+            <span>Logout</span>
         </li>
       </ul>
     </div>

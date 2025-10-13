@@ -1,0 +1,146 @@
+.payment-settings-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    padding: 2rem;
+  
+    .payment-configuration, .payment-history {
+      background-color: #1a1a1a;
+      padding: 2rem;
+      border-radius: 8px;
+  
+      h2 {
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+        color: #fff;
+        border-bottom: 1px solid #333;
+        padding-bottom: 1rem;
+      }
+    }
+  
+    .payment-methods {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+  
+      .method-button {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background-color: #333;
+        color: #fff;
+        border: 1px solid #555;
+        padding: 0.75rem 1.25rem;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+  
+        &:hover {
+          background-color: #444;
+          border-color: #777;
+        }
+  
+        &.active {
+          background-color: #FCBE03;
+          color: #111;
+          border-color: #FCBE03;
+        }
+  
+        svg {
+          font-size: 1.2rem;
+        }
+      }
+    }
+  
+    .method-details {
+      h3 {
+        color: #FCBE03;
+        margin-bottom: 0.5rem;
+      }
+  
+      p {
+        font-size: 0.9rem;
+        color: #aaa;
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+      }
+  
+      input[type="email"], input[type="text"] {
+        width: 100%;
+        padding: 0.75rem;
+        background-color: #222;
+        border: 1px solid #444;
+        border-radius: 4px;
+        color: #fff;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+      }
+      
+      .card-details-row {
+          display: flex;
+          gap: 1rem;
+          input {
+              width: 100%;
+          }
+      }
+  
+      .save-button {
+        background-color: #FCBE03;
+        color: #111;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: bold;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+            background-color: darken(#FCBE03, 10%);
+        }
+      }
+    }
+  
+    .payment-history {
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            
+            th, td {
+                padding: 0.75rem 1rem;
+                text-align: left;
+                border-bottom: 1px solid #333;
+            }
+
+            th {
+                color: #aaa;
+                font-size: 0.9rem;
+                text-transform: uppercase;
+            }
+
+            td {
+                color: #fff;
+            }
+
+            .status-badge {
+                padding: 0.25rem 0.6rem;
+                border-radius: 12px;
+                font-size: 0.8rem;
+                font-weight: bold;
+                text-transform: capitalize;
+
+                &.paid {
+                    background-color: rgba(4, 189, 4, 0.2);
+                    color: #04BD04;
+                }
+                &.pending {
+                    background-color: rgba(252, 190, 3, 0.2);
+                    color: #FCBE03;
+                }
+            }
+        }
+    }
+  }
+  

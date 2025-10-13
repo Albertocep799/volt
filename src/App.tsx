@@ -14,14 +14,20 @@ import PrivacyPolicy from './pages/legal/PrivacyPolicy';
 import ChatWidget from './components/ChatWidget/ChatWidget';
 import Contact from './pages/Contact/Contact';
 import Dashboard from './pages/Dashboard/Dashboard';
+import CommunityAnalytics from './pages/CommunityAnalytics/CommunityAnalytics';
+import ProfilePage from './pages/Profile/Profile';
+import Statistic from './pages/Statistic/Statistic';
 
 const AppContent = () => {
   const location = useLocation();
   const pageClass = location.pathname === '/' ? 'is-home' : '';
+  const isStatisticPage = location.pathname === '/statistic';
+
+  const isAuthenticated = location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/community') || location.pathname.startsWith('/statistic');
 
   return (
     <div className={`App ${pageClass}`}>
-      <Header />
+      {!isStatisticPage && <Header />}
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -35,10 +41,13 @@ const AppContent = () => {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/community/:communityId" element={<CommunityAnalytics />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/statistic" element={<Statistic />} />
         </Routes>
       </main>
-      <Footer />
-      <ChatWidget />
+      {!isStatisticPage && <Footer />}
+      <ChatWidget isAuthenticated={isAuthenticated} />
     </div>
   );
 }

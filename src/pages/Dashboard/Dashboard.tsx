@@ -1,52 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import './Dashboard.scss';
 import { FaSort } from 'react-icons/fa';
+import {
+  voltUser,
+  voltCommunities,
+  voltCampaigns,
+} from '../../data/dash';
+import type { Community, Campaign } from '../../data/dash';
 
-// Mock user data structure
-interface User {
-  username: string;
-  avatar: string;
-}
+// Mapeo de estilos para los estados de campaña
+const statusStyles: { [key: string]: string } = {
+  'pending-approval': 'status-pending-approval',
+  'pending': 'status-pending',
+  'active': 'status-active',
+};
 
 const Dashboard: React.FC = () => {
-  const [user, setUser] = useState<User | null>(null);
-
-  // Fetch user from localStorage on mount
-  useEffect(() => {
-    try {
-      const storedUser = localStorage.getItem('volt-user');
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
-      }
-    } catch (error) {
-      console.error("Failed to parse user from localStorage", error);
-    }
-  }, []);
-
   return (
     <div className="dashboard-container">
       <header className="dashboard-header">
-        {/* Safety check to ensure user exists before accessing username */}
-        {user && <h1>Hey {user.username} 👋</h1>}
+        <h1>Hey {voltUser.username} 👋</h1>
       </header>
 
-      {/* "My Communities" Section */}
-      <section className="dashboard-section">
+      {/* Sección "My Communities" */}
+      <section className="dashboard-section communities-section">
         <div className="section-header">
           <h2>My Communities</h2>
           <button className="btn-add-community">Add Community</button>
         </div>
-        <div className="section-content">
-          <p className="empty-state">No Results</p>
+        <div className="communities-grid">
+          {voltCommunities.map((community: Community) => (
+            <div key={community.id} className="community-card">
+              <div className="community-icon"></div>
+              <h3>{community.name}</h3>
+              <p>Guild status: {community.guildStatus}</p>
+              <Link to={`/community/${community.id}`} className="btn-manage">Manage</Link>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* "My Campaigns" Section */}
-      <section className="dashboard-section">
+      {/* Sección "My Campaigns" */}
+      <section className="dashboard-section campaigns-section">
         <div className="section-header">
           <h2>My Campaigns</h2>
         </div>
-        <div className="section-content campaigns-table">
+        <div className="campaigns-table">
           <div className="table-header">
             <span>Name</span>
             <span>Status <FaSort /></span>
@@ -56,13 +56,35 @@ const Dashboard: React.FC = () => {
             <span>Activated At</span>
             <span>Link</span>
             <span>Brief</span>
-            <span>Chat</span>
           </div>
           <div className="table-body">
-            <p className="empty-state">No deals</p>
+            {voltCampaigns.map((campaign: Campaign) => (
+              <div key={campaign.id} className="table-row">
+                <span>{campaign.name}</span>
+                <div className="status-cell">
+                  <span className={`status-badge ${statusStyles[campaign.status] || ''}`}>
+                    {campaign.status.replace('-', ' ')}
+                  </span>
+                </div>
+                <span>{campaign.communityName}</span>
+                <span>{campaign.paymentInfo}</span>
+                <span>{campaign.postCount}</span>
+                <span>{campaign.activationDate}</span>
+                <span>
+                  {campaign.link !== 'No link' ? 
+                    <a href={`https://${campaign.link}`} target="_blank" rel="noopener noreferrer">{campaign.link}</a> : 
+                    'No link'}
+                </span>
+                <span>
+                    <a href={campaign.briefUrl} target="_blank" rel="noopener noreferrer">View Brief</a>
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
+      
+      {/* El ChatWidget ya no es necesario aquí, se gestiona desde App.tsx */}
     </div>
   );
 };

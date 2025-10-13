@@ -1,0 +1,104 @@
+/* src/components/Toast/Toast.scss */
+
+$toast-bg: #1A1D21;
+$border-color: #2e2e2e;
+$success-color: #28a745;
+$error-color: #ff4d4f;
+$info-color: #17a2b8;
+$primary-text: #E6E6E6;
+$secondary-text: #A0A0A0;
+
+// --- Keyframe Animations ---
+@keyframes slideInRight {
+  from {
+    transform: translateX(calc(100% + 20px)); // Start off-screen to the right
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(calc(100% + 20px)); // End off-screen to the right
+    opacity: 0;
+  }
+}
+
+
+// --- Toast Item Styling ---
+.toast-item {
+  display: flex;
+  align-items: stretch;
+  width: 350px;
+  max-width: 90vw;
+  background-color: $toast-bg;
+  border-radius: 10px;
+  border: 1px solid $border-color;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  color: $primary-text;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  
+  // --- Animation Control ---
+  animation-name: slideInRight;
+  animation-fill-mode: forwards; // Keep the final state of the animation
+  animation-timing-function: ease-out;
+
+  // Class applied via JS to trigger the exit animation
+  &.exiting {
+    animation-name: slideOutRight;
+    animation-timing-function: ease-in;
+  }
+}
+
+.toast-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px;
+  font-size: 20px;
+  
+  // Color variants for the icon based on parent class
+  .toast-success & { color: $success-color; }
+  .toast-error & { color: $error-color; }
+  .toast-info & { color: $info-color; }
+}
+
+.toast-content {
+  padding: 14px 0;
+  flex-grow: 1;
+
+  .toast-title {
+    margin: 0;
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  .toast-message {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: $secondary-text;
+  }
+}
+
+.toast-close {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  color: $secondary-text;
+  font-size: 24px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $primary-text;
+  }
+}

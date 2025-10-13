@@ -1,90 +1,81 @@
-/*
-  UserDropdown SCSS - V3 (Final Polish)
-  - This version perfectly matches the spacing, icon alignment, and border-radius from the reference image.
-*/
+/* UserDropdown Styles */
+$card-bg: #1c1c1c;
+$border-color: #2e2e2e;
+$primary-text-color: #ffffff;
+$secondary-text-color: #a0a0a0;
+$accent-color: #FCBE03;
+$logout-color: #ff4d4f;
 
-@keyframes fadeInScaleUp {
-  from { opacity: 0; transform: scale(0.95) translateY(-5px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-:root {
-  --brand-color: #FCBE03;
-  --dropdown-bg: #1C1C1F;
-  --dropdown-text-primary: #E0E0E0;
-  --dropdown-text-secondary: #888;
-  --dropdown-hover-bg: #2a2a2e;
-  --logout-color: #E53935;
-  --separator-color: #333;
-}
-
-.user-dropdown {
+.user-dropdown-container {
   position: absolute;
-  top: calc(100% + 15px);
+  top: calc(100% + 10px);
   right: 0;
-  background-color: var(--dropdown-bg);
-  border-radius: 12px; // Matched to the image
+  z-index: 1001;
+  background-color: $card-bg;
+  border-radius: 12px;
+  border: 1px solid $border-color;
+  width: 250px;
   padding: 8px;
-  min-width: 220px; // Fine-tuned width
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  z-index: 1100;
-  transform-origin: top right;
-  animation: fadeInScaleUp 0.15s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  font-family: 'Inter', sans-serif;
 
-  ul { list-style: none; margin: 0; padding: 0; }
+  .dropdown-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 
-  li {
-    border-radius: 6px; // Slightly less rounded for items
-    transition: background-color 0.2s ease;
-
-    &:not(.separator):hover { background-color: var(--dropdown-hover-bg); }
-
-    // Use Link for router navigation
-    a, .logout-item {
+    li a {
       display: flex;
-      align-items: center; // This is key for vertical alignment
-      gap: 16px; // Perfect gap from image
-      padding: 12px;
-      width: 100%;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 16px;
       text-decoration: none;
+      color: $secondary-text-color;
+      font-size: 15px;
       font-weight: 500;
-      font-size: 15px; // Fine-tuned font size
-      line-height: 1.4;
-      color: var(--dropdown-text-primary);
+      border-radius: 8px;
+      transition: background-color 0.2s, color 0.2s;
+      cursor: pointer;
+
+      svg {
+        font-size: 16px;
+        width: 20px;
+        text-align: center;
+      }
+
+      &:hover {
+        background-color: lighten($card-bg, 7%);
+        color: $primary-text-color;
+      }
     }
 
-    .logout-item { 
-      cursor: pointer; 
-      width: 100%;
-      text-align: left;
-      background: none;
-      border: none;
+    .separator {
+      height: 1px;
+      background-color: $border-color;
+      margin: 8px 4px;
     }
 
-    svg {
-      font-size: 19px; // Fine-tuned icon size
-      color: var(--dropdown-text-secondary);
-      width: 20px;
-      flex-shrink: 0;
+    .logout-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      color: $logout-color;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s;
+
+      svg {
+        font-size: 16px;
+        width: 20px;
+        text-align: center;
+      }
+
+      &:hover {
+        background-color: rgba($logout-color, 0.1);
+      }
     }
-  }
-
-  .separator {
-    height: 1px;
-    background-color: var(--separator-color);
-    margin: 6px 4px;
-  }
-
-  // Specific color overrides
-  li a[href="/stats"] {
-    span { color: var(--brand-color); }
-    svg { color: var(--brand-color); }
-  }
-
-  .logout-item {
-    color: var(--logout-color);
-    font-weight: 600;
-    svg { color: var(--logout-color); }
   }
 }

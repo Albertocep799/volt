@@ -32,7 +32,8 @@ const useInView = (options: IntersectionObserverInit) => {
 
 const Home: React.FC = () => {
   const [isTypeformVisible, setTypeformVisible] = useState(false);
-  const [formKey, setFormKey] = useState(Date.now()); // Add a key state for re-rendering
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
+  const typeformContainerRef = useRef<HTMLDivElement>(null);
   const [sauceRef, sauceInView] = useInView({ threshold: 0.1 });
   const [feature1Ref, feature1InView] = useInView({ threshold: 0.2 });
   const [feature2Ref, feature2InView] = useInView({ threshold: 0.2 });
@@ -40,32 +41,63 @@ const Home: React.FC = () => {
   const [testimonialsRef, testimonialsInView] = useInView({ threshold: 0.1 });
   const [ctaRef, ctaInView] = useInView({ threshold: 0.3 });
 
-  // Load Typeform script once on component mount
+  // Load Typeform embed script and track its loading status
   useEffect(() => {
     const scriptId = 'typeform-embed-script';
-    if (document.getElementById(scriptId)) {
-      return;
+    const existingScript = document.getElementById(scriptId);
+
+    if (existingScript && (window as any).typeform) {
+        setIsScriptLoaded(true);
+        return;
     }
-    const script = document.createElement('script');
-    script.id = scriptId;
-    script.src = '//embed.typeform.com/next/embed.js';
-    script.async = true;
-    document.body.appendChild(script);
+
+    if (!existingScript) {
+        const script = document.createElement('script');
+        script.id = scriptId;
+        script.src = '//embed.typeform.com/next/embed.js';
+        script.async = true;
+        script.onload = () => {
+          setIsScriptLoaded(true);
+        };
+        document.body.appendChild(script);
+    }
   }, []);
 
+  // Create and destroy Typeform widget
+  useEffect(() => {
+    const container = typeformContainerRef.current;
+    if (container && isTypeformVisible && isScriptLoaded) {
+      const typeform = (window as any).typeform;
+      if (typeform && typeof typeform.createWidget === 'function') {
+        typeform.createWidget('yiBrOMK1', {
+          container: container,
+          hideFooter: true,
+          transparentBackground: true,
+        });
+      }
+
+      // Cleanup function
+      return () => {
+        if (container) {
+          while (container.firstChild) {
+            container.removeChild(container.firstChild);
+          }
+        }
+      };
+    }
+  }, [isTypeformVisible, isScriptLoaded]);
+
   const handleContactClick = () => {
-    // Update the key to force re-mounting the widget
-    setFormKey(Date.now());
     setTypeformVisible(true);
   };
 
   const handleCloseTypeform = () => {
     setTypeformVisible(false);
-  }
+  };
 
   return (
     <div className="home-page">
-      <section className={`hero-section ${isTypeformVisible ? 'typeform-active' : ''}`}>
+      <section className="hero-section">
         <div className="hero-content">
           <div className="hero-text-content">
             <h1>Supercharge your brand's reach in the gaming universe.</h1>
@@ -77,10 +109,14 @@ const Home: React.FC = () => {
             <button onClick={handleContactClick} className="btn btn-secondary">Contact Sales</button>
           </div>
 
-          <div className="typeform-embed-container">
-            <button onClick={handleCloseTypeform} className="close-typeform-btn">&times;</button>
-            <div key={formKey} data-tf-widget="yiBrOMK1" data-tf-hide-footer="true" data-tf-transparent-background="true"></div>
-          </div>
+          {isTypeformVisible && (
+            <div className="typeform-modal">
+              <div className="typeform-modal-content">
+                <button onClick={handleCloseTypeform} className="close-typeform-btn">&times;</button>
+                <div ref={typeformContainerRef} style={{width: '100%', height: '500px'}}></div>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 

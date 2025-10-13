@@ -92,17 +92,11 @@
     text-align: center;
     padding: 120px 40px;
     background-color: #000000;
-    overflow: hidden; /* Changed from visible to hidden */
     position: relative;
-    transition: padding 0.5s ease;
 
     .hero-content {
       max-width: 800px;
       width: 100%;
-      
-      .hero-text-content {
-        transition: opacity 0.4s ease, transform 0.4s ease;
-      }
 
       h1 {
         font-size: 56px;
@@ -119,7 +113,6 @@
         margin-bottom: 40px;
         animation: fadeInUp 1s ease-out 0.5s forwards;
         opacity: 0;
-        transition: margin-bottom 0.4s ease;
       }
 
       .hero-actions {
@@ -128,7 +121,6 @@
         display: flex;
         justify-content: center;
         gap: 20px;
-        transition: opacity 0.4s ease;
       }
     }
   }
@@ -367,20 +359,28 @@
   }
 }
 
-/* --- Typeform Embed Styles --- */
+/* --- Typeform Modal Styles --- */
 
-/* Hide the container by default */
-.typeform-embed-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.typeform-modal {
+  position: fixed; 
+  top: 0;
+  left: 0;
   width: 100%;
-  max-width: 760px; /* Or any width you prefer */
-  height: 0;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease-out, height 0s ease 0.4s; /* Delay height transition */
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.typeform-modal-content {
+  position: relative;
+  width: 90%;
+  max-width: 760px;
+  background: #1e1e1e;
+  padding: 20px;
+  border-radius: 12px;
 }
 
 .close-typeform-btn {
@@ -404,25 +404,5 @@
       background: #444;
       color: #fff;
       transform: scale(1.1);
-  }
-}
-
-
-/* Styles when Typeform is active */
-.hero-section.typeform-active {
-  
-  /* Fade out the hero content */
-  .hero-text-content,
-  .hero-actions {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  /* Make the Typeform container visible */
-  .typeform-embed-container {
-    opacity: 1;
-    height: 500px; /* The height of your form */
-    pointer-events: auto;
-    transition: opacity 0.4s ease-out 0.2s; /* Fade in after a short delay */
   }
 }

@@ -1,0 +1,207 @@
+.date-filter-container {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  position: relative;
+
+  .filter-group {
+    label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #8e9297;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+    }
+  }
+
+  .custom-select-wrapper {
+    position: relative;
+    width: 130px;
+
+    .custom-select-trigger {
+      background-color: #202225;
+      border: 1px solid #101113;
+      border-radius: 3px;
+      padding: 8px 12px;
+      color: #dcddde;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: border-color 0.2s ease;
+
+      &:hover { border-color: #040405; }
+
+      .chevron-icon {
+        color: #b9bbbe;
+        font-size: 0.9rem;
+      }
+    }
+
+    .custom-options {
+      position: absolute;
+      top: calc(100% + 5px);
+      left: 0;
+      right: 0;
+      background-color: #2f3136;
+      border: 1px solid #1a1a1a;
+      border-radius: 4px;
+      z-index: 20;
+      overflow: hidden;
+
+      .custom-option {
+        padding: 0.5rem 0.75rem;
+        color: #b9bbbe;
+        cursor: pointer;
+        transition: background-color 0.1s ease;
+
+        &:hover {
+          background-color: #40444b;
+          color: #fff;
+        }
+
+        &.selected {
+          background-color: #5865f2;
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  .date-range-picker {
+    position: relative;
+    background-color: #202225;
+    border: 1px solid #101113;
+    border-radius: 3px;
+    padding: 8px 12px;
+    color: #dcddde;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 260px;
+    cursor: pointer;
+
+    &:hover { border-color: #040405; }
+
+    .calendar-icon {
+      color: #b9bbbe;
+      font-size: 1.1rem;
+    }
+  }
+
+  .calendar-dropdown {
+    position: absolute;
+    top: calc(100% + 5px);
+    right: 0;
+    background-color: #2b2d31;
+    border: 1px solid #1f2124;
+    border-radius: 4px;
+    z-index: 20;
+    padding: 1rem;
+    width: 320px;
+
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #f2f3f5;
+      padding: 0 0.5rem;
+
+      button {
+        background: none; border: none; color: #d4d7dc; cursor: pointer;
+        font-size: 1rem; padding: 0.5rem; border-radius: 3px;
+        &:hover { background-color: rgba(79, 84, 92, 0.3); color: #fff; }
+      }
+      .calendar-title {
+        font-weight: 600; padding: 0.25rem 0.5rem; border-radius: 3px; cursor: pointer;
+        &:hover { background-color: rgba(79, 84, 92, 0.3); }
+      }
+    }
+
+    .calendar-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      text-align: center;
+      color: #8e9297;
+      font-weight: 700;
+      font-size: 0.75rem;
+      margin-top: 1rem;
+      padding: 0;
+    }
+
+    .calendar-divider {
+      border: none;
+      border-top: 1px solid #3a3d42;
+      margin: 0.5rem 0;
+    }
+
+    .calendar-grid {
+      display: grid;
+
+      &.days-grid {
+        grid-template-columns: repeat(7, 1fr);
+        border-top: 1px solid #3a3d42;
+        border-left: 1px solid #3a3d42;
+      }
+
+      .calendar-cell {
+        color: #b9bbbe;
+        text-align: center;
+        cursor: pointer;
+        position: relative;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-right: 1px solid #3a3d42;
+        border-bottom: 1px solid #3a3d42;
+
+        .day-number { z-index: 1; }
+        
+        &.disabled { 
+            color: #4f545c; 
+            cursor: default; 
+        }
+
+        &:not(.disabled):not(.in-range):hover .day-number::after {
+          content: '';
+          position: absolute;
+          bottom: -8px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 70%;
+          height: 2px;
+          background-color: #5865f2;
+          border-radius: 1px;
+        }
+
+        &.in-range {
+          background-color: #404791;
+          color: #fff;
+          border-radius: 0; // Ranges have sharp corners
+        }
+        
+        &.start-date, &.end-date {
+            background-color: #5865f2;
+            color: #fff;
+        }
+
+        &.start-date {
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+        }
+
+        &.end-date {
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+
+        // A single day selection should be fully rounded
+        &.start-date.end-date {
+            border-radius: 4px;
+        }
+      }
+    }
+  }
+}
