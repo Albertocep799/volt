@@ -58,7 +58,7 @@ const Header: React.FC = () => {
               <img src={user.profilePic} alt="User Avatar" className="user-avatar" />
             </button>
             {isDropdownOpen && (
-               <UserDropdown username={user.username} profilePic={user.profilePic} onLogout={handleLogout} />
+               <UserDropdown onLogout={handleLogout} />
             )}
           </div>
         ) : (

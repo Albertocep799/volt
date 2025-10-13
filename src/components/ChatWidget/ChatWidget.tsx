@@ -3,7 +3,6 @@ import { FaBolt, FaPaperPlane, FaTimes } from 'react-icons/fa';
 import './ChatWidget.scss';
 
 import { voltCampaigns } from '../../data/dash';
-import type { Campaign } from '../../data/dash';
 
 interface ChatWidgetProps {
   isAuthenticated?: boolean;
