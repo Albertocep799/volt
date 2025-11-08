@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Statistic.scss';
-import { FaChevronRight, FaPlus } from 'react-icons/fa';
+import { FaChevronRight, FaPlus, FaDiscord } from 'react-icons/fa';
 import { voltUser, voltCommunities } from '../../data/dash';
 
 const additionalServers = [
@@ -13,6 +13,25 @@ const additionalServers = [
 ];
 
 const Statistic: React.FC = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Check for a simulated auth token in localStorage
+    const token = localStorage.getItem('discordAuthToken');
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const handleLogin = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault(); // Prevent navigation for this simulation
+    // Simulate a successful login
+    localStorage.setItem('discordAuthToken', 'dummy-token-for-demo');
+    setIsLoggedIn(true);
+    // In a real app, you would redirect to the Discord auth page
+    // window.location.href = '/auth/discord';
+  };
+
   const registeredServers = voltCommunities;
   const unregisteredServers = additionalServers.filter(
     (server) => !registeredServers.some((registered) => registered.id === server.id)
@@ -20,46 +39,55 @@ const Statistic: React.FC = () => {
 
   const getSafeIcon = (url?: string) => {
     const fallbackIcon = 'https://i.imgur.com/T3f0TfT.png';
-    if (url && !url.includes('example.com')) {
-      return url;
-    }
-    return fallbackIcon;
+    return (url && !url.includes('example.com')) ? url : fallbackIcon;
   };
 
   return (
     <div className="statistic-page-background">
       <div className="statistic-content-wrapper">
-        <div className="statistic-card">
-          <div className="logged-in-as">
-            <img src={getSafeIcon(voltUser.avatar)} alt="User Avatar" />
-            <span>Logged in as <strong>{voltUser.username}</strong></span>
-          </div>
-          <div className="server-list-container">
-            <div className="server-list registered-servers">
-              {registeredServers.map(server => (
-                <Link to={`/community/${server.id}`} key={server.id} className="server-item">
-                  <div className="server-info">
-                    <img src={getSafeIcon(server.imageUrl)} alt={`${server.name} icon`} className="server-icon" />
-                    <span className="server-name">{server.name}</span>
-                  </div>
-                  <FaChevronRight className="action-icon" />
-                </Link>
-              ))}
+        {isLoggedIn ? (
+          <div className="statistic-card">
+            <div className="logged-in-as">
+              <img src={getSafeIcon(voltUser.avatar)} alt="User Avatar" />
+              <span>Logged in as <strong>{voltUser.username}</strong></span>
             </div>
-            <div className="separator"></div>
-            <div className="server-list unregistered-servers">
-              {unregisteredServers.map(server => (
-                <div key={server.id} className="server-item">
-                  <div className="server-info">
-                    <img src={getSafeIcon(server.icon)} alt={`${server.name} icon`} className="server-icon" />
-                    <span className="server-name">{server.name}</span>
+            <div className="server-list-container">
+              <div className="server-list registered-servers">
+                {registeredServers.map(server => (
+                  <Link to={`/community/${server.id}`} key={server.id} className="server-item">
+                    <div className="server-info">
+                      <img src={getSafeIcon(server.imageUrl)} alt={`${server.name} icon`} className="server-icon" />
+                      <span className="server-name">{server.name}</span>
+                    </div>
+                    <FaChevronRight className="action-icon" />
+                  </Link>
+                ))}
+              </div>
+              <div className="separator"></div>
+              <div className="server-list unregistered-servers">
+                {unregisteredServers.map(server => (
+                  <div key={server.id} className="server-item">
+                    <div className="server-info">
+                      <img src={getSafeIcon(server.icon)} alt={`${server.name} icon`} className="server-icon" />
+                      <span className="server-name">{server.name}</span>
+                    </div>
+                    <FaPlus className="action-icon" />
                   </div>
-                  <FaPlus className="action-icon" />
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="login-prompt-container">
+            <div className="login-prompt-card">
+              <h2>Connect Your Discord Account</h2>
+              <p>To view your statistics, please log in with your Discord account.</p>
+              <a href="/auth/discord" onClick={handleLogin} className="btn btn-discord">
+                <FaDiscord /> Login with Discord
+              </a>
+            </div>
+          </div>
+        )}
         <footer className="statistic-footer">
           <p>
             <span>© 2025 Volt</span>

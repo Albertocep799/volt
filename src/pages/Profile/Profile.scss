@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 /* src/pages/Profile/Profile.scss */
 
 // --- Base Variables ---
@@ -9,183 +11,62 @@ $secondary-text: #a0a0a0;
 $accent-color: #FCBE03;
 $danger-color: #ff4d4f;
 $google-blue: #4285F4;
+$discord-blurple: #5865F2;
 $success-color: #28a745;
 
 // --- Main Page Layout ---
-.profile-container {
-  padding: 40px;
-  color: $primary-text;
-  max-width: 1200px;
-  margin: 0 auto;
-  font-family: 'Inter', sans-serif;
-}
-
-.profile-header-title {
-  font-size: 36px;
-  font-weight: 700;
-  color: $accent-color;
-  margin-bottom: 40px;
-}
-
-.profile-layout {
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 60px;
-}
+.profile-container { padding: 40px; color: $primary-text; max-width: 1200px; margin: 0 auto; font-family: 'Inter', sans-serif; }
+.profile-header-title { font-size: 36px; font-weight: 700; color: $accent-color; margin-bottom: 40px; }
+.profile-layout { display: grid; grid-template-columns: 280px 1fr; gap: 60px; }
 
 // --- Left Column: Avatar ---
 .profile-avatar-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-
-  .avatar-image {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    border: 4px solid $border-color;
-    object-fit: cover;
-  }
-
-  .btn-upload {
-    background-color: $card-bg;
-    border: 1px solid $border-color;
-    color: $primary-text;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    &:hover { background-color: lighten($card-bg, 5%); }
-  }
+  display: flex; flex-direction: column; align-items: center; gap: 20px;
+  .avatar-image { width: 200px; height: 200px; border-radius: 50%; border: 4px solid $border-color; object-fit: cover; }
+  .btn-upload { background-color: $card-bg; border: 1px solid $border-color; color: $primary-text; padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: background-color 0.2s; &:hover { background-color: color.adjust($card-bg, $lightness: 5%); } &:disabled { cursor: not-allowed; opacity: 0.5; } }
 }
 
 // --- Right Column: Tabs & Content ---
-.profile-details-section {
-  background-color: $card-bg;
-  border-radius: 16px;
-  padding: 10px;
-  border: 1px solid $border-color;
-}
-
+.profile-details-section { background-color: $card-bg; border-radius: 16px; padding: 10px; border: 1px solid $border-color; }
 .tabs {
-  display: flex;
-  border-bottom: 1px solid $border-color;
-  padding: 10px 20px;
-
-  button {
-    background: none; border: none; color: $secondary-text;
-    padding: 10px 20px; cursor: pointer; font-size: 16px;
-    font-weight: 600; position: relative; transition: color 0.2s;
-
-    &.active {
-      color: $primary-text;
-      &::after {
-        content: ''; position: absolute; bottom: -1px; left: 0;
-        width: 100%; height: 2px; background-color: $accent-color;
-      }
-    }
-    &:hover:not(.active) { color: $primary-text; }
-  }
+  display: flex; border-bottom: 1px solid $border-color; padding: 10px 20px;
+  button { background: none; border: none; color: $secondary-text; padding: 10px 20px; cursor: pointer; font-size: 16px; font-weight: 600; position: relative; transition: color 0.2s; &.active { color: $primary-text; &::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px; background-color: $accent-color; } } &:hover:not(.active) { color: $primary-text; } }
 }
+.tab-content { padding: 30px; .tab-pane > h3 { font-size: 22px; margin-bottom: 25px; font-weight: 600; } .tab-pane > p { font-size: 15px; color: $secondary-text; margin-bottom: 30px; max-width: 90%; } }
 
-.tab-content {
-  padding: 30px;
-  .tab-pane > h3 { font-size: 22px; margin-bottom: 10px; font-weight: 600; }
-  .tab-pane > p { font-size: 15px; color: $secondary-text; margin-bottom: 30px; max-width: 90%; }
-}
+// --- Generic Styles ---
+.btn-primary { background-color: $accent-color; color: #000; border:none; padding: 12px 20px; font-weight: bold; cursor: pointer; border-radius: 8px; transition: opacity 0.2s; &:hover { opacity: 0.85; } &:disabled { cursor: not-allowed; opacity: 0.5; } }
+.separator { height: 1px; background-color: $border-color; margin: 20px 0; }
 
-// --- Generic Form & Button Styles ---
-.form-group { /* ... */ }
-.btn-primary {
-    background-color: $accent-color; color: #000; border:none; 
-    padding: 12px 20px; font-weight: bold; cursor: pointer; 
-    border-radius: 8px; transition: opacity 0.2s; &:hover { opacity: 0.85; }
-}
-.separator { height: 1px; background-color: $border-color; margin: 30px 0; }
+// --- Connections Tab ---
+.connection-item { display: flex; justify-content: space-between; align-items: center; padding: 20px; border: 1px solid $border-color; border-radius: 12px; margin-bottom: 20px; transition: background-color 0.2s; &:hover { background-color: color.adjust($card-bg, $lightness: 3%); } .connection-info { display: flex; align-items: center; gap: 18px; .icon { font-size: 24px; } .google { color: $google-blue; } .discord { color: $discord-blurple; } .email { color: $secondary-text; } h4 { margin: 0; font-size: 18px; font-weight: 600; } } .btn-connect { border: none; padding: 9px 20px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background-color 0.2s, color 0.2s; &.google { background-color: $google-blue; color: white; } &.discord { background-color: $discord-blurple; color: white; } &.email { background-color: #333; color: white; } &.btn-disconnect { background-color: $danger-color; color: white; } &:disabled { cursor: not-allowed; opacity: 0.5; background-color: #333; } } }
 
-// --- Connections Tab (REDESIGNED) ---
-.connection-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  border: 1px solid $border-color;
-  border-radius: 12px;
-  margin-bottom: 20px;
-  transition: background-color 0.2s;
-  &:hover { background-color: lighten($card-bg, 3%); }
-
-  .connection-info {
-    display: flex; align-items: center; gap: 18px;
-    .icon { font-size: 24px; }
-    .google { color: $google-blue; }
-    .email { color: $secondary-text; }
-    h4 { margin: 0; font-size: 18px; font-weight: 600; }
-  }
-
-  .btn-connect {
-    border: none; padding: 9px 20px; font-weight: 600;
-    border-radius: 8px; cursor: pointer; transition: background-color 0.2s;
-    &.google { background-color: $google-blue; color: white; }
-    &.email { background-color: #333; color: white; }
-    &.btn-disconnect { background-color: $danger-color; color: white; }
-  }
-}
-
-// --- Notifications Tab (REDESIGNED & FIXED ALIGNMENT) ---
+// --- Notifications Tab (STYLED) ---
 .notification-group {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 0;
-  
+  display: flex; justify-content: space-between; align-items: center; padding: 15px 0;
   .info {
-    h4 { margin: 0 0 5px; font-size: 17px; }
-    p { margin: 0; color: $secondary-text; font-size: 14px; }
+    h4 { margin: 0 0 8px; font-size: 17px; font-weight: 600; }
+    .email-address { display: flex; align-items: center; color: $secondary-text; font-size: 15px;
+      .edit-icon { margin-left: 12px; cursor: pointer; transition: color 0.2s; &:hover { color: $primary-text; } }
+    }
+    .btn-add-phone { background: none; border: 1px solid $border-color; color: $primary-text; padding: 8px 15px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-weight: 500; font-size: 14px; transition: background-color 0.2s; &:hover { background-color: color.adjust($card-bg, $lightness: 5%); } }
   }
-  .action { /* Container for the switch */ }
-}
-
-// --- Advanced Tab (REDESIGNED) ---
-.advanced-group {
-    display: flex; justify-content: space-between; align-items: center; padding: 10px 0;
-    .info { h4 { font-size: 17px; margin: 0 0 5px; } p { margin: 0; font-size: 14px; color: $secondary-text; } }
-}
-
-.user-id-box {
-    display: flex; align-items: center; background-color: #000;
-    border: 1px solid $border-color; border-radius: 8px; padding: 10px 15px;
-    
-    span { font-family: 'monospace'; font-size: 15px; color: $secondary-text; letter-spacing: 1.5px; }
-    button { background: none; border: none; color: $secondary-text; font-size: 16px; margin-left: 15px; cursor: pointer; &:hover { color: $primary-text; } }
-}
-
-.danger-zone-separator { border-top: 1px solid rgba($danger-color, 0.4); }
-
-.danger-zone-content {
-  h4 { color: $danger-color; font-size: 17px; }
-  p { color: $secondary-text; font-size: 14px; max-width: 100%; margin-bottom: 20px; }
-  .btn-danger { 
-    background-color: $danger-color; color: white; border: none; padding: 10px 16px; 
-    border-radius: 8px; cursor: pointer; font-weight: 600; transition: background-color 0.2s;
-    display: inline-flex; align-items: center; gap: 8px;
-    &:hover { background-color: darken($danger-color, 10%); }
+  .action {
+    display: flex; align-items: center; gap: 16px;
+    .switch-label { color: $primary-text; font-size: 15px; font-weight: 500; cursor: pointer; }
   }
 }
+
+// --- Advanced Tab ---
+.advanced-group { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; .info { h4 { font-size: 17px; margin: 0 0 5px; } p { margin: 0; font-size: 14px; color: $secondary-text; } } }
+.user-id-box { display: flex; align-items: center; background-color: #000; border: 1px solid $border-color; border-radius: 8px; padding: 10px 15px; span { font-family: 'monospace'; font-size: 15px; color: $secondary-text; letter-spacing: 1.5px; } button { background: none; border: none; color: $secondary-text; font-size: 16px; margin-left: 15px; cursor: pointer; &:hover { color: $primary-text; } } }
+.danger-zone-separator { border-top: 1px solid rgba($danger-color, 0.4); margin-top: 30px; }
+.danger-zone-content { padding-top: 20px; h4 { color: $danger-color; font-size: 17px; } p { color: $secondary-text; font-size: 14px; max-width: 100%; margin-bottom: 20px; } .btn-danger { background-color: $danger-color; color: white; border: none; padding: 10px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: background-color 0.2s; display: inline-flex; align-items: center; gap: 8px; &:hover { background-color: color.adjust($danger-color, $lightness: -10%); } &:disabled { cursor: not-allowed; opacity: 0.5; } } }
 
 // --- Reusable Components (Form, Switch) ---
-.form-group { margin-bottom: 25px; label { display: block; margin-bottom: 8px; color: $secondary-text; font-weight: 500; } input { width: 100%; background-color: #000; border: 1px solid $border-color; color: $primary-text; padding: 12px; border-radius: 8px; font-size: 15px; &:focus { border-color: $accent-color; outline: none; } } }
+.form-group { margin-bottom: 25px; label { display: block; margin-bottom: 8px; color: $secondary-text; font-weight: 500; } input { width: 100%; background-color: #000; border: 1px solid $border-color; color: $primary-text; padding: 12px; border-radius: 8px; font-size: 15px; &:focus { border-color: $accent-color; outline: none; } &:disabled { cursor: not-allowed; opacity: 0.6; } } }
 .input-with-icon { position: relative; .edit-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: $secondary-text; cursor: pointer; } }
 .switch { position: relative; display: inline-block; width: 50px; height: 28px; input { opacity: 0; width: 0; height: 0; } .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; &:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; } } input:checked + .slider { background-color: $accent-color; } input:checked + .slider:before { transform: translateX(22px); } .slider.round { border-radius: 34px; } .slider.round:before { border-radius: 50%; } }
 
 // --- Toast Container ---
-.toast-container {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 2000;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
+.toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 2000; display: flex; flex-direction: column; gap: 15px; }

@@ -1,40 +1,61 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './Profile.scss';
-import { FaUserEdit, FaGoogle, FaEnvelope, FaTrashAlt, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaUserEdit, FaGoogle, FaEnvelope, FaTrashAlt, FaEye, FaEyeSlash, FaDiscord, FaPlus } from 'react-icons/fa';
+import { useAuth } from '../../context/AuthContext';
 
-// New component imports
 import EmailAuthModal from '../../components/EmailAuthModal/EmailAuthModal';
 import Toast from '../../components/Toast/Toast';
-import type { ToastProps } from '../../components/Toast/Toast'; // FIX: Import type separately
+import type { ToastProps } from '../../components/Toast/Toast';
 
-// Define a simplified Toast type for state management
 type SimpleToast = Omit<ToastProps, 'onClose'>;
 
-// Updated dummy data
-const initialUserData = {
-  name: 'Albertocẹp799',
-  nickname: 'Berto',
-  avatarUrl: 'https://i.imgur.com/exampleAvatar.png', // Placeholder image
-  userId: 'user_1a2b3c4d5e6f7g8h9i0j',
-  connections: {
-    google: true,
-    email: false,
-  },
-  notifications: {
-    email: true,
-    sms: false,
-  }
-};
-
 const ProfilePage: React.FC = () => {
+  const { user, isAuthenticated, provider, logout } = useAuth();
+
   const [activeTab, setActiveTab] = useState<'profile' | 'connections' | 'notifications' | 'advanced'>('profile');
-  const [userData, setUserData] = useState(initialUserData);
   const [showId, setShowId] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [toasts, setToasts] = useState<SimpleToast[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // --- Toast Management ---
+  const [editableUserData, setEditableUserData] = useState({
+    name: '',
+    nickname: '',
+    avatarUrl: 'https://i.imgur.com/fg64g4l.png', // A generic default avatar
+  });
+
+  const [notificationSettings, setNotificationSettings] = useState({
+    email: 'albertocepedamateo@gmail.com',
+    phone: '', // Initially no phone
+    emailEnabled: true,
+    phoneEnabled: false,
+  });
+
+  // CORRECTED: The useEffect hook now correctly sets the avatar URL based on the auth provider.
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      let avatarUrl = 'https://i.imgur.com/fg64g4l.png'; // Default fallback
+
+      if (user.avatar) {
+        if (provider === 'google') {
+          avatarUrl = user.avatar; // Google provides the full URL
+        } else if (provider === 'discord') {
+          avatarUrl = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
+        }
+      } else if (provider === 'discord') {
+        // Handle Discord's default avatars if user.avatar is null
+        const discordDefaultAvatarIndex = parseInt(user.id.slice(-1)) % 5;
+        avatarUrl = `https://cdn.discordapp.com/embed/avatars/${discordDefaultAvatarIndex}.png`;
+      }
+      
+      setEditableUserData({
+        name: user.username,
+        nickname: user.username,
+        avatarUrl: avatarUrl,
+      });
+    }
+  }, [user, isAuthenticated, provider]); // Added provider to the dependency array
+
   const addToast = (message: string, type: SimpleToast['type']) => {
     const id = Date.now();
     setToasts(prev => [...prev, { id, message, type }]);
@@ -44,30 +65,25 @@ const ProfilePage: React.FC = () => {
     setToasts(prev => prev.filter(toast => toast.id !== id));
   };
 
-  // --- Handlers ---
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setUserData(prev => ({ ...prev, [name]: value }));
+    setEditableUserData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      setUserData(prev => ({ ...prev, avatarUrl: URL.createObjectURL(file) }));
+      setEditableUserData(prev => ({ ...prev, avatarUrl: URL.createObjectURL(file) }));
       addToast('Avatar successfully updated!', 'success');
     }
   };
-  
-  const handleToggle = (key: 'email' | 'sms') => {
-    const newStatus = !userData.notifications[key];
-    setUserData(prev => ({
-      ...prev,
-      notifications: { ...prev.notifications, [key]: newStatus },
-    }));
-    addToast(`${key === 'email' ? 'E-mail' : 'Phone'} notifications have been ${newStatus ? 'enabled' : 'disabled'}`, 'success');
-  };
 
-  // --- Tab Render Functions (Redesigned) ---
+  const handleNotificationToggle = (key: 'emailEnabled' | 'phoneEnabled') => {
+    const newStatus = !notificationSettings[key];
+    const type = key === 'emailEnabled' ? 'E-mail' : 'Phone';
+    addToast(`${type} notifications have been ${newStatus ? 'enabled' : 'disabled'}.`, 'success');
+    setNotificationSettings(prev => ({ ...prev, [key]: newStatus }));
+  };
 
   const renderUserProfile = () => (
     <div className="tab-pane">
@@ -75,72 +91,94 @@ const ProfilePage: React.FC = () => {
       <div className="form-group">
         <label>Name</label>
         <div className="input-with-icon">
-          <input type="text" name="name" value={userData.name} onChange={handleInputChange} />
+          <input type="text" name="name" value={editableUserData.name} onChange={handleInputChange} disabled={!isAuthenticated} />
           <FaUserEdit className="edit-icon" />
         </div>
       </div>
       <div className="form-group">
         <label>Nickname</label>
         <div className="input-with-icon">
-          <input type="text" name="nickname" value={userData.nickname} onChange={handleInputChange} />
+          <input type="text" name="nickname" value={editableUserData.nickname} onChange={handleInputChange} disabled={!isAuthenticated} />
           <FaUserEdit className="edit-icon" />
         </div>
       </div>
-      <button className="btn-primary">Save Changes</button>
+      <button className="btn-primary" disabled={!isAuthenticated}>Save Changes</button>
     </div>
   );
 
-  const renderConnections = () => (
-    <div className="tab-pane">
-      <h3>Connected Accounts</h3>
-      <p>Link your accounts to streamline your login process and integrate your profiles.</p>
-      <div className="connection-item">
-        <div className="connection-info">
-          <FaGoogle className="icon google" />
-          <h4>Google</h4>
+  const renderConnections = () => {
+    const isDiscordConnected = isAuthenticated && provider === 'discord';
+    const isGoogleConnected = isAuthenticated && provider === 'google';
+
+    return (
+      <div className="tab-pane">
+        <h3>Connected Accounts</h3>
+        <p>Link your accounts to streamline your login process and integrate your profiles.</p>
+        <div className="connection-item">
+          <div className="connection-info">
+            <FaDiscord className="icon discord" />
+            <h4>Discord</h4>
+          </div>
+          <button className={`btn-connect ${isDiscordConnected ? 'btn-disconnect' : 'discord'}`} onClick={isDiscordConnected ? logout : () => { /* Connect logic */ }}>
+            {isDiscordConnected ? 'Disconnect' : 'Connect'}
+          </button>
         </div>
-        <button className={`btn-connect ${userData.connections.google ? 'btn-disconnect' : 'google'}`}>
-          {userData.connections.google ? 'Disconnect' : 'Connect'}
-        </button>
-      </div>
-      <div className="connection-item">
-        <div className="connection-info">
-          <FaEnvelope className="icon email" />
-          <h4>Email</h4>
+        <div className="connection-item">
+          <div className="connection-info">
+            <FaGoogle className="icon google" />
+            <h4>Google</h4>
+          </div>
+          <button className={`btn-connect ${isGoogleConnected ? 'btn-disconnect' : 'google'}`} onClick={isGoogleConnected ? logout : () => { /* Connect logic */ }}>
+            {isGoogleConnected ? 'Disconnect' : 'Connect'}
+          </button>
         </div>
-         <button className={`btn-connect ${userData.connections.email ? 'btn-disconnect' : 'email'}`} onClick={() => !userData.connections.email && setIsModalOpen(true)}>
-          {userData.connections.email ? 'Disconnect' : 'Connect'}
-        </button>
+        <div className="connection-item">
+          <div className="connection-info">
+            <FaEnvelope className="icon email" />
+            <h4>Email</h4>
+          </div>
+          <button className={`btn-connect email`} onClick={() => !isAuthenticated && setIsModalOpen(true)} disabled={isAuthenticated}>
+            Connect
+          </button>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const renderNotifications = () => (
     <div className="tab-pane">
       <h3>Notifications</h3>
-       <div className="notification-group">
+      <div className="notification-group">
         <div className="info">
-          <h4>E-mail Notifications</h4>
-          <p>Receive important updates and notifications via email.</p>
+          <h4>Notification e-mail</h4>
+          <div className="email-address">
+            <span>{notificationSettings.email}</span>
+            <FaUserEdit className="edit-icon" />
+          </div>
         </div>
         <div className="action">
           <label className="switch">
-            <input type="checkbox" checked={userData.notifications.email} onChange={() => handleToggle('email')} />
+            <input type="checkbox" checked={notificationSettings.emailEnabled} onChange={() => handleNotificationToggle('emailEnabled')} />
             <span className="slider round"></span>
           </label>
+          <span className="switch-label">Enable e-mail notifications</span>
         </div>
       </div>
       <div className="separator"></div>
       <div className="notification-group">
         <div className="info">
-          <h4>SMS Notifications</h4>
-          <p>Receive critical alerts and updates via text message.</p>
+          <h4>Phone - SMS Notifications</h4>
+          <button className="btn-add-phone">
+            <FaPlus />
+            Add phone
+          </button>
         </div>
         <div className="action">
           <label className="switch">
-            <input type="checkbox" checked={userData.notifications.sms} onChange={() => handleToggle('sms')} />
+            <input type="checkbox" checked={notificationSettings.phoneEnabled} onChange={() => handleNotificationToggle('phoneEnabled')} />
             <span className="slider round"></span>
           </label>
+          <span className="switch-label">Enable phone notifications</span>
         </div>
       </div>
     </div>
@@ -149,25 +187,27 @@ const ProfilePage: React.FC = () => {
   const renderAdvanced = () => (
     <div className="tab-pane">
       <h3>Advanced Settings</h3>
-      <div className="advanced-group">
+      {isAuthenticated && user && (
+        <div className="advanced-group">
           <div className="info">
-              <h4>User ID</h4>
-              <p>This is your unique and non-changeable identifier on the platform.</p>
+            <h4>User ID</h4>
+            <p>This is your unique Discord identifier.</p>
           </div>
-          <div className="action">
-              <div className="user-id-box">
-                  <span>{showId ? userData.userId : '∗'.repeat(24)}</span>
-                  <button onClick={() => setShowId(!showId)}>
-                      {showId ? <FaEyeSlash /> : <FaEye />}
-                  </button>
-              </div>
+          <div className="action-advanced">
+            <div className="user-id-box">
+              <span>{showId ? user.id : '∗'.repeat(user.id.length)}</span>
+              <button onClick={() => setShowId(!showId)}>
+                {showId ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
           </div>
-      </div>
+        </div>
+      )}
       <div className="separator danger-zone-separator"></div>
       <div className="danger-zone-content">
         <h4>Delete Account</h4>
-        <p>Permanently delete your account and all associated content. This action is irreversible.</p>
-        <button className="btn-danger"><FaTrashAlt /> Delete My Account</button>
+        <p>Permanently delete your account. This action is irreversible.</p>
+        <button className="btn-danger" disabled={!isAuthenticated}><FaTrashAlt /> Delete My Account</button>
       </div>
     </div>
   );
@@ -177,25 +217,16 @@ const ProfilePage: React.FC = () => {
       <div className="toast-container">
         {toasts.map(toast => <Toast key={toast.id} {...toast} onClose={removeToast} />)}
       </div>
-
       {isModalOpen && <EmailAuthModal onClose={() => setIsModalOpen(false)} />}
-
       <h1 className="profile-header-title">Profile</h1>
       <main className="profile-layout">
         <aside className="profile-avatar-section">
-          <img src={userData.avatarUrl} alt="User Avatar" className="avatar-image" />
-          <input 
-            type="file" 
-            ref={fileInputRef} 
-            onChange={handleAvatarChange}
-            accept="image/*"
-            style={{ display: 'none' }}
-          />
-          <button className="btn-upload" onClick={() => fileInputRef.current?.click()}>
+          <img src={editableUserData.avatarUrl} alt="User Avatar" className="avatar-image" />
+          <input type="file" ref={fileInputRef} onChange={handleAvatarChange} accept="image/*" style={{ display: 'none' }} disabled={!isAuthenticated} />
+          <button className="btn-upload" onClick={() => fileInputRef.current?.click()} disabled={!isAuthenticated}>
             Change Avatar
           </button>
         </aside>
-
         <section className="profile-details-section">
           <nav className="tabs">
             <button onClick={() => setActiveTab('profile')} className={activeTab === 'profile' ? 'active' : ''}>User Profile</button>
@@ -203,7 +234,6 @@ const ProfilePage: React.FC = () => {
             <button onClick={() => setActiveTab('notifications')} className={activeTab === 'notifications' ? 'active' : ''}>Notifications</button>
             <button onClick={() => setActiveTab('advanced')} className={activeTab === 'advanced' ? 'active' : ''}>Advanced</button>
           </nav>
-
           <div className="tab-content">
             {activeTab === 'profile' && renderUserProfile()}
             {activeTab === 'connections' && renderConnections()}

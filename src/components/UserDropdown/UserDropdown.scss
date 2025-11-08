@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 /* UserDropdown Styles */
 $card-bg: #1c1c1c;
 $border-color: #2e2e2e;
@@ -44,7 +46,7 @@ $logout-color: #ff4d4f;
       }
 
       &:hover {
-        background-color: lighten($card-bg, 7%);
+        background-color: color.adjust($card-bg, $lightness: 7%);
         color: $primary-text-color;
       }
     }

@@ -1,96 +1,133 @@
-import React, { useState, useEffect } from 'react';
-import { FaBolt, FaPaperPlane, FaTimes } from 'react-icons/fa';
+import React, { useState } from 'react';
+import { Widget } from '@typeform/embed-react';
 import './ChatWidget.scss';
+import { FaBolt, FaComments, FaHandshake, FaTimes, FaPaperPlane } from 'react-icons/fa';
 
-import { voltCampaigns } from '../../data/dash';
-
-interface ChatWidgetProps {
-  isAuthenticated?: boolean;
+// --- Typeform Popup Component ---
+interface TypeformPopupProps {
+  onClose: () => void;
 }
 
-const ChatWidget: React.FC<ChatWidgetProps> = ({ isAuthenticated = false }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [activeChannel, setActiveChannel] = useState<'support' | string>('support');
+const TypeformPopup: React.FC<TypeformPopupProps> = ({ onClose }) => {
+  return (
+    <div className="typeform-popup-overlay" onClick={onClose}>
+      <div className="typeform-popup-content" onClick={(e) => e.stopPropagation()}>
+        <button className="close-popup-button" onClick={onClose}><FaTimes /></button>
+        <Widget id="wJ45k9bE" className="typeform-widget" />
+      </div>
+    </div>
+  );
+};
 
-  // Efecto para resetear el canal si el usuario cierra sesión
-  useEffect(() => {
-    if (!isAuthenticated) {
-      setActiveChannel('support');
-    }
-  }, [isAuthenticated]);
+// --- Chat Window Component ---
+interface ChatWindowProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
 
-  const toggleChat = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsOpen(!isOpen);
-  };
-
-  // Las campañas solo están disponibles para usuarios autenticados
-  const activeCampaigns = isAuthenticated ? voltCampaigns.filter(c => c.status === 'active') : [];
-
-  const getChannelInfo = () => {
-    if (activeChannel === 'support') {
-      return {
-        name: 'Volt Support',
-        message: 'Hey there! Got any questions about our campaigns or communities? Drop them here.',
-      };
-    }
-    const campaign = voltCampaigns.find(c => c.id === activeChannel);
-    return campaign 
-      ? { name: campaign.name, message: `Welcome to the chat for ${campaign.name}. How can we help?` }
-      : { name: 'Volt Support', message: 'Chat not found. Please select a valid channel.' };
-  };
-
-  const { name: channelName, message: channelMessage } = getChannelInfo();
+const ChatWindow: React.FC<ChatWindowProps> = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
 
   return (
-    <div className={`chat-widget-container ${isOpen ? 'open' : ''}`}>
-      {/* Ventana del Chat */}
-      <div className="chat-launcher-window" onClick={(e) => e.stopPropagation()}>
-        <div className="chat-content">
-          <div className="chat-header">
-            <div className="brand-icon">
-              <FaBolt />
-            </div>
-            <div className="header-text">
-              <h3>{channelName}</h3>
-              <p>Ask us anything, we'll reply quickly.</p>
-            </div>
-            <button className="close-chat-button" onClick={toggleChat}><FaTimes /></button>
-          </div>
-
-          {/* Selector de Canal (solo si está autenticado y hay campañas activas) */}
-          {activeCampaigns.length > 0 && (
-            <div className="chat-channel-selector">
-              <button className={activeChannel === 'support' ? 'active' : ''} onClick={() => setActiveChannel('support')}>
-                Support
-              </button>
-              {activeCampaigns.map(campaign => (
-                <button key={campaign.id} className={activeChannel === campaign.id ? 'active' : ''} onClick={() => setActiveChannel(campaign.id)}>
-                  {campaign.name}
-                </button>
-              ))}
-            </div>
-          )}
-
-          <div className="chat-body">
-            <div className="message message-reply">
-              <div className="brand-icon-reply">
-                <FaBolt />
-              </div>
-              <p>{channelMessage}</p>
-            </div>
-          </div>
-          
-          <div className="chat-footer">
-            <input type="text" placeholder="Type your message" />
-            <button className="send-button"><FaPaperPlane /></button>
-          </div>
+    <div className="chat-window-container" onClick={(e) => e.stopPropagation()}>
+      <div className="chat-header">
+        <div className="brand-icon"><FaBolt /></div>
+        <div className="header-text">
+          <h3>Volt Support</h3>
+          <p>Ask us anything, we'll reply quickly.</p>
+        </div>
+        <button className="close-chat-button" onClick={onClose}><FaTimes /></button>
+      </div>
+      <div className="chat-body">
+        <div className="message message-reply">
+          <div className="brand-icon-reply"><FaBolt /></div>
+          <p>Hey there! Got any questions about our campaigns or communities? Drop them here.</p>
         </div>
       </div>
+      <div className="chat-footer">
+        <input type="text" placeholder="Type your message" />
+        <button className="send-button"><FaPaperPlane /></button>
+      </div>
+    </div>
+  );
+};
 
-      {/* Botón para abrir el chat */}
-      <div className="launcher-button" onClick={toggleChat}>
-        <FaBolt className="launcher-icon" />
+
+// --- Main Chat Widget Component ---
+const ChatWidget: React.FC = () => {
+  const [isLauncherOpen, setIsLauncherOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isTypeformOpen, setIsTypeformOpen] = useState(false);
+
+  const toggleLauncher = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    // Si ninguna ventana está abierta, abre el lanzador.
+    // Si alguna ventana está abierta, el clic en el botón principal las cierra todas.
+    if (!isChatOpen && !isTypeformOpen) {
+      setIsLauncherOpen(!isLauncherOpen);
+    } else {
+      setIsChatOpen(false);
+      setIsTypeformOpen(false);
+      setIsLauncherOpen(false);
+    }
+  };
+
+  const openChat = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsLauncherOpen(false);
+    setIsChatOpen(true);
+  };
+
+  const openTypeform = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsLauncherOpen(false);
+    setIsTypeformOpen(true);
+  };
+
+  const closeChat = () => setIsChatOpen(false);
+  const closeTypeform = () => setIsTypeformOpen(false);
+
+  const showLauncherIcon = !isLauncherOpen && !isChatOpen && !isTypeformOpen;
+
+  return (
+    <div className="chat-widget-container">
+      {/* --- Popups Modales --- */}
+      {isTypeformOpen && <TypeformPopup onClose={closeTypeform} />}
+      
+      <div className={`chat-main-container ${isChatOpen || isLauncherOpen ? 'visible' : ''}`}>
+        {/* Ventana del Chat de Soporte */}
+        <ChatWindow isOpen={isChatOpen} onClose={closeChat} />
+
+        {/* Ventana de Selección del Lanzador */}
+        {isLauncherOpen && (
+          <div className="launcher-selector-window" onClick={(e) => e.stopPropagation()}>
+             <div className="launcher-header">
+                <h4>Welcome to Volt</h4>
+                <p>How can we help you today?</p>
+                <button className="close-launcher-button" onClick={() => setIsLauncherOpen(false)}><FaTimes /></button>
+             </div>
+            <button className="launcher-option" onClick={openChat}>
+              <FaComments className="option-icon" />
+              <div className="option-text">
+                <h5>Support</h5>
+                <p>Ask us a question</p>
+              </div>
+            </button>
+            <div className="launcher-separator"></div>
+            <button className="launcher-option" onClick={openTypeform}>
+              <FaHandshake className="option-icon" />
+              <div className="option-text">
+                <h5>Secretlab Chair Collab</h5>
+                <p>Apply for our campaign</p>
+              </div>
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Botón Flotante Principal */}
+      <div className="launcher-button" onClick={toggleLauncher}>
+        {showLauncherIcon ? <FaBolt className="launcher-icon" /> : <FaTimes className="launcher-icon close-icon" />}
       </div>
     </div>
   );

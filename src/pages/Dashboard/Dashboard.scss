@@ -1,188 +1,184 @@
-/* Dashboard Styles */
-$dashboard-bg: #121212;
-$primary-text-color: #ffffff;
-$secondary-text-color: #a0a0a0;
-$accent-color: #FCBE03;
-$card-bg: #1c1c1c;
-$border-color: #2e2e2e;
-$active-color: #2dd36f; // Green for active status
-
-.dashboard-container {
-  background-color: $dashboard-bg;
-  color: $primary-text-color;
-  padding: 40px;
+/* Main Layout */
+.dashboard-layout {
+  display: flex;
   min-height: 100vh;
-  font-family: 'Inter', sans-serif;
+}
 
-  a {
-    color: $accent-color;
+/* Sidebar Styles */
+.dashboard-sidebar {
+  width: 240px;
+  background-color: #0a0a0a;
+  border-right: 1px solid #222;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #a0a0a0;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
+
+  svg {
+    margin-right: 15px;
+    font-size: 18px;
+  }
+
+  &:hover {
+    background-color: #1a1a1a;
+    color: #fff;
+  }
+
+  &.active {
+    background-color: #1f1f1f;
+    color: #fff;
+  }
+}
+
+/* Main Content Styles */
+.dashboard-main-content {
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
+}
+
+.dashboard-header {
+  margin-bottom: 40px;
+
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+  }
+}
+
+.dashboard-section {
+  margin-bottom: 50px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+
+  h2 {
+    font-size: 22px;
+  }
+}
+
+.btn-add-community {
+  background-color: var(--primary-color);
+  color: #000;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #eab503;
+  }
+}
+
+/* Communities Grid */
+.communities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.community-card {
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  padding: 25px;
+  border: 1px solid #333;
+
+  .community-icon {
+    width: 50px;
+    height: 50px;
+    background-color: #2a2a2a;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+
+  h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  p {
+    color: #a0a0a0;
+    margin-bottom: 20px;
+  }
+
+  .btn-manage {
+    display: inline-block;
+    background-color: #2a2a2a;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 8px;
     text-decoration: none;
+
     &:hover {
-      text-decoration: underline;
+      background-color: #3a3a3a;
+    }
+  }
+}
+
+/* Campaigns Table */
+.campaigns-table {
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  border: 1px solid #333;
+  overflow: hidden;
+
+  .table-header,
+  .table-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1.5fr 1fr 1fr 1fr 1fr 1fr;
+    align-items: center;
+    padding: 15px 20px;
+    gap: 15px;
+  }
+
+  .table-header {
+    background-color: #202020;
+    font-weight: 600;
+    color: #a0a0a0;
+    font-size: 14px;
+    border-bottom: 1px solid #333;
+  }
+
+  .table-body .table-row {
+    border-bottom: 1px solid #2a2a2a;
+
+    &:last-child {
+      border-bottom: none;
     }
   }
 
-  .dashboard-header {
-    margin-bottom: 40px;
-    h1 {
-      font-size: 28px;
-      font-weight: 700;
-    }
+  .status-badge {
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: capitalize;
+    display: inline-block;
   }
 
-  .dashboard-section {
-    margin-bottom: 40px;
-
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-
-      h2 {
-        font-size: 22px;
-        font-weight: 600;
-      }
-
-      .btn-add-community {
-        background-color: $accent-color;
-        color: #000;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 8px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: background-color 0.2s;
-
-        &:hover {
-          background-color: darken($accent-color, 10%);
-        }
-      }
-    }
-  }
-
-  .communities-section {
-    .communities-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 20px;
-
-      .community-card {
-        background-color: $card-bg;
-        border: 1px solid $border-color;
-        border-radius: 12px;
-        padding: 24px;
-        text-align: left;
-
-        .community-icon {
-          width: 60px;
-          height: 60px;
-          border-radius: 50%;
-          background-color: $accent-color;
-          margin-bottom: 16px;
-        }
-
-        h3 {
-          font-size: 18px;
-          font-weight: 600;
-          margin-bottom: 4px;
-        }
-
-        p {
-          color: $secondary-text-color;
-          font-size: 14px;
-          margin-bottom: 20px;
-        }
-
-        .btn-manage {
-          width: 100%;
-          background-color: $accent-color;
-          color: #000;
-          border: none;
-          padding: 12px;
-          border-radius: 8px;
-          font-weight: 700;
-          cursor: pointer;
-          transition: background-color 0.2s;
-
-          &:hover {
-            background-color: darken($accent-color, 10%);
-          }
-        }
-      }
-    }
-  }
-
-  .campaigns-table {
-    background-color: $card-bg;
-    border: 1px solid $border-color;
-    border-radius: 12px;
-    overflow-x: auto;
-
-    // Ajuste de columnas para eliminar el chat
-    .table-header, .table-row {
-      display: grid;
-      grid-template-columns: 2.5fr 1fr 1.5fr 1fr 1.5fr 1fr 1fr 1fr;
-      align-items: center;
-      padding: 16px 24px;
-      border-bottom: 1px solid $border-color;
-      min-width: 1100px;
-    }
-
-    .table-header {
-      color: $secondary-text-color;
-      font-size: 12px;
-      text-transform: uppercase;
-      font-weight: 600;
-
-      span {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-      }
-    }
-
-    .table-body {
-      .table-row {
-        font-size: 14px;
-
-        &:last-child {
-          border-bottom: none;
-        }
-        
-        .status-cell {
-            display: flex;
-        }
-
-        .status-badge {
-          padding: 6px 12px;
-          border-radius: 20px;
-          font-weight: 600;
-          text-transform: capitalize;
-          font-size: 12px;
-          display: inline-block;
-          
-          &.status-pending-approval {
-            background-color: rgba($accent-color, 0.2);
-            color: $accent-color;
-            border: 1px solid $accent-color;
-          }
-          
-          &.status-pending {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: $primary-text-color;
-            border: 1px solid $secondary-text-color;
-          }
-
-          &.status-active {
-            background-color: rgba($active-color, 0.2);
-            color: $active-color;
-            border: 1px solid $active-color;
-          }
-        }
-      }
-    }
-  }
-
-  // Se eliminaron los estilos de .floating-chat-btn
+  .status-pending-approval { background-color: #4b2a00; color: #ff9d00; }
+  .status-pending { background-color: #3b3b3b; color: #d1d1d1; }
+  .status-active { background-color: #003b0d; color: #00ff4c; }
 }

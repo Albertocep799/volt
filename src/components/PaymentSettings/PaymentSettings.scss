@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 .payment-settings-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -98,7 +100,7 @@
         transition: background-color 0.2s ease;
 
         &:hover {
-            background-color: darken(#FCBE03, 10%);
+            background-color: color.adjust(#FCBE03, $lightness: -10%);
         }
       }
     }
