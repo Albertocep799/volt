@@ -116,14 +116,18 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ isAuthenticated }) => {
                 <p>Ask us a question</p>
               </div>
             </button>
-            <div className="launcher-separator"></div>
-            <button className="launcher-option" onClick={openTypeform}>
-              <FaHandshake className="option-icon" />
-              <div className="option-text">
-                <h5>Secretlab Chair Collab</h5>
-                <p>Apply for our campaign</p>
-              </div>
-            </button>
+            {isAuthenticated && (
+              <>
+                <div className="launcher-separator"></div>
+                <button className="launcher-option" onClick={openTypeform}>
+                  <FaHandshake className="option-icon" />
+                  <div className="option-text">
+                    <h5>Secretlab Chair Collab</h5>
+                    <p>Apply for our campaign</p>
+                  </div>
+                </button>
+              </>
+            )}
           </div>
         )}
       </div>
