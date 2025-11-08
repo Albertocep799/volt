@@ -6,7 +6,7 @@ import Footer from './components/Footer/Footer';
 import AuthDiscord from './pages/AuthDiscord';
 import AuthGoogle from './pages/AuthGoogle';
 import Brands from './pages/Brands/Brands';
-import GameDevs from './pages/GameDevs/GameDevs';
+import Network from './pages/Network/Network';
 import Communities from './pages/Communities/Communities';
 import Company from './pages/Company/Company';
 import Careers from './pages/Careers/Careers';
@@ -34,7 +34,7 @@ const AppContent = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/brands" element={<Brands />} />
-          <Route path="/gamedevs" element={<GameDevs />} />
+          <Route path="/network" element={<Network />} />
           <Route path="/communities" element={<Communities />} />
           <Route path="/company" element={<Company />} />
           <Route path="/careers" element={<Careers />} />

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 /**
  * This component handles the redirection to Google's OAuth2 authorization page.

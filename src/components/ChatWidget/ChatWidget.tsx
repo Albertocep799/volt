@@ -52,9 +52,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ isOpen, onClose }) => {
   );
 };
 
+interface ChatWidgetProps {
+  isAuthenticated: boolean;
+}
 
 // --- Main Chat Widget Component ---
-const ChatWidget: React.FC = () => {
+const ChatWidget: React.FC<ChatWidgetProps> = ({ isAuthenticated }) => {
   const [isLauncherOpen, setIsLauncherOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isTypeformOpen, setIsTypeformOpen] = useState(false);
