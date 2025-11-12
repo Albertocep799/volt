@@ -1,0 +1,96 @@
+// Variables inspired by Discord's UI
+$primary-background: #36393f;
+$select-background: #2f3136;
+$select-border-color: #202225;
+$select-hover-background: #40444b;
+$text-color: #dcddde;
+$label-color: #8e9297;
+$selected-item-background: #4854a0;
+
+.custom-selector-container {
+  position: relative;
+  min-width: 150px; // A min-width is better for responsiveness
+  font-family: 'gg sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.custom-selector-label {
+  display: block;
+  color: $label-color;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.custom-selector {
+  position: relative;
+  cursor: pointer;
+  background-color: $select-background;
+  border-radius: 5px;
+  user-select: none;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: #3a3d42;
+  }
+
+  // Style for placeholder text
+  &.is-placeholder .select-selected span {
+    color: #9d9d9d; 
+    font-weight: 500;
+  }
+
+  .select-selected {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    color: $text-color;
+    font-size: 15px; // Adjusted for consistency
+
+    .select-arrow {
+      transition: transform 0.2s ease;
+      margin-left: 8px;
+    }
+  }
+
+  &.open {
+    .select-arrow {
+      transform: rotate(180deg);
+    }
+  }
+
+  .select-items {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    right: 0;
+    background-color: #2b2d31; // Slightly different bg for dropdown
+    border-radius: 5px;
+    border: 1px solid $select-border-color;
+    z-index: 10;
+    max-height: 220px;
+    overflow-y: auto;
+    padding: 5px;
+
+    // Hide scrollbar
+    &::-webkit-scrollbar { display: none; }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .select-item {
+    padding: 10px 12px;
+    color: $text-color;
+    border-radius: 3px;
+
+    &:hover {
+      background-color: $select-hover-background;
+    }
+
+    &.selected {
+      background-color: $selected-item-background;
+      font-weight: 500;
+    }
+  }
+}

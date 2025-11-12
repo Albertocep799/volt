@@ -1,0 +1,144 @@
+/* --- ServerCard Component Styles --- */
+.server-card {
+  background-color: #1a1a1a; 
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid #2e2e2e;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    border-color: #FCBE03;
+  }
+}
+
+.server-card-header {
+  position: relative;
+  height: 120px;
+}
+
+.server-card-banner {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.acceptance-rate-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #000;
+  z-index: 2;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+  &.high {
+    background-color: #4CAF50; // Green
+  }
+  &.medium {
+    background-color: #FFC107; // Yellow
+  }
+  &.low {
+    background-color: #F44336; // Red
+  }
+}
+
+.server-card-icon-wrapper {
+  position: absolute;
+  bottom: -30px;
+  left: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #1a1a1a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  border: 3px solid #FCBE03;
+}
+
+.server-card-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.server-card-body {
+  padding: 45px 20px 20px 20px;
+}
+
+.server-card-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+
+  h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+
+  .verified-icon {
+    color: #FCBE03;
+    font-size: 1.2rem;
+  }
+}
+
+.server-card-members {
+  font-size: 0.9rem;
+  color: #a0a0a0;
+  margin-bottom: 15px;
+}
+
+.server-card-description {
+  font-size: 0.95rem;
+  color: #ffffff;
+  line-height: 1.5;
+  // Flex-grow property moved to the parent flex container (.server-card)
+}
+
+.server-card-footer {
+  margin-top: auto; // Pushes footer to the bottom
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px 20px 20px;
+}
+
+.server-card-stats {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #a0a0a0;
+  font-size: 0.9rem;
+
+  .stat-icon {
+    color: #FCBE03;
+  }
+}
+
+.server-card-category span {
+  background-color: #2e2e2e;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #FCBE03;
+}
