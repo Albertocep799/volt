@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { FaDiscord, FaServer, FaBolt, FaTrophy, FaSyncAlt, FaUsers, FaArrowRight } from 'react-icons/fa';
+import { FaDiscord, FaBolt, FaTrophy, FaSyncAlt, FaUsers, FaArrowRight } from 'react-icons/fa';
 import './Communities.scss';
 
 
