@@ -22,6 +22,7 @@ import Statistic from './pages/Statistic/Statistic';
 import { useAuth } from './context/AuthContext';
 import ScrollToTop from './components/utils/ScrollToTop';
 import Features from './pages/Features/Features';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'; // Import the new component
 
 const AppContent = () => {
   const location = useLocation();
@@ -38,8 +39,18 @@ const AppContent = () => {
           <Route path="/" element={<Home />} />
           <Route path="/features" element={<Features />} />
           <Route path="/brands" element={<Brands />} />
+          
+          {/* Network routes */}
           <Route path="/network" element={<Network />} />
-          <Route path="/network/:serverId" element={<ServerProfile />} />
+          <Route 
+            path="/network/:serverId" 
+            element={
+              <ProtectedRoute>
+                <ServerProfile />
+              </ProtectedRoute>
+            }
+          />
+          
           <Route path="/communities" element={<Communities />} />
           <Route path="/company" element={<Company />} />
           <Route path="/careers" element={<Careers />} />
@@ -48,9 +59,12 @@ const AppContent = () => {
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/community/:communityId" element={<CommunityAnalytics />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          
+          {/* Protected dashboard and profile routes */}
+          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/community/:communityId" element={<ProtectedRoute><CommunityAnalytics /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+
           <Route path="/statistic" element={<Statistic />} />
         </Routes>
       </main>

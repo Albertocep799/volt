@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, type ReactNode, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import AuthModal from '../components/AuthModal/AuthModal';
 
 // --- Types ---
 interface User {
@@ -16,6 +17,7 @@ interface AuthContextType {
   user: User | null;
   provider: AuthProviderType;
   logout: () => void;
+  showAuthModal: (show: boolean, mode?: 'login' | 'signup') => void;
 }
 
 // --- API Endpoints ---
@@ -32,7 +34,21 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [provider, setProvider] = useState<AuthProviderType>(null);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState<'login' | 'signup'>('login');
+  const [redirectPath, setRedirectPath] = useState<string | null>(null);
+  
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Capture the intended path if we were redirected from a protected route
+  useEffect(() => {
+    if (location.state?.from?.pathname) {
+      setRedirectPath(location.state.from.pathname);
+      // Clean the location state to prevent accidental re-navigation
+      window.history.replaceState({}, document.title)
+    }
+  }, [location.state]);
 
   const logout = useCallback(() => {
     Cookies.remove('accessToken', { path: '/' });
@@ -41,8 +57,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setUser(null);
     setIsAuthenticated(false);
     setProvider(null);
-    navigate('/'); // Redirect to homepage on logout
+    setIsAuthModalOpen(false);
+    setRedirectPath(null); // Clear redirect path on logout
+    navigate('/');
   }, [navigate]);
+
+  const showAuthModal = useCallback((show: boolean, mode: 'login' | 'signup' = 'login') => {
+    setAuthModalMode(mode);
+    setIsAuthModalOpen(show);
+  }, []);
 
   const fetchUserDetails = useCallback(async (token: string, tokenType: string, loginProvider: NonNullable<AuthProviderType>) => {
     const details = PROVIDER_DETAILS[loginProvider];
@@ -64,12 +87,21 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setUser(normalizedUser);
       setIsAuthenticated(true);
       setProvider(loginProvider);
+      setIsAuthModalOpen(false);
+      
+      // --- REDIRECT LOGIC ---
+      if (redirectPath) {
+        navigate(redirectPath); // Navigate to intended page
+        setRedirectPath(null); // Clear the path
+      } else {
+        navigate('/dashboard'); // Navigate to default dashboard
+      }
 
     } catch (error) {
       console.error(`Authentication error with ${loginProvider}:`, error);
       logout();
     }
-  }, [logout]);
+  }, [logout, navigate, redirectPath]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.hash.substring(1));
@@ -101,9 +133,20 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   }, [isAuthenticated, fetchUserDetails]);
 
-  const value = { isAuthenticated, user, provider, logout };
+  const value = { isAuthenticated, user, provider, logout, showAuthModal };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+      {isAuthModalOpen && (
+        <AuthModal
+          mode={authModalMode}
+          onClose={() => setIsAuthModalOpen(false)}
+          onSwitchMode={() => setAuthModalMode(prev => prev === 'login' ? 'signup' : 'login')}
+        />
+      )}
+    </AuthContext.Provider>
+  );
 };
 
 // --- Hook ---

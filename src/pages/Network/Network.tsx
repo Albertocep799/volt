@@ -1,6 +1,4 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
-import AuthModal from '../../components/AuthModal/AuthModal';
 import { mockServers, type Server } from '../../data/network';
 import type { SegmentationType } from '../../data/network';
 import ServerCard from '../../components/ServerCard/ServerCard';
@@ -9,12 +7,13 @@ import type { Option } from '../../components/CustomSelector/CustomSelector';
 import { FaFilter, FaCheck, FaQuestionCircle } from 'react-icons/fa';
 import './Network.scss';
 
-const getServers = (isAuthenticated: boolean): Server[] => {
-  if (!isAuthenticated) {
-    return [];
-  }
-  return mockServers;
-};
+// This function is no longer needed, we will get servers directly.
+// const getServers = (isAuthenticated: boolean): Server[] => {
+//   if (!isAuthenticated) {
+//     return [];
+//   }
+//   return mockServers;
+// };
 
 const getAverageConversionRate = (server: Server) => {
     if (!server.campaigns || server.campaigns.length === 0) return 0;
@@ -52,13 +51,8 @@ const categories: Option[] = ['All', 'Gaming', 'Anime', 'Tech', 'Music', 'Educat
 const languages: Option[] = ['All', 'English', 'Spanish', 'French', 'German', 'Portuguese'].map(l => ({ value: l, label: l }));
 
 const Network: React.FC = () => {
-  const { isAuthenticated } = useAuth();
-  const [servers, setServers] = useState<Server[]>([]);
-  const [modalMode, setModalMode] = useState<'login' | 'signup'>('login');
-  
-  useEffect(() => {
-    setServers(getServers(isAuthenticated));
-  }, [isAuthenticated]);
+  // We directly use mockServers, no longer dependent on isAuthenticated
+  const [servers] = useState<Server[]>(mockServers);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -102,8 +96,7 @@ const Network: React.FC = () => {
   }
 
   const filteredAndSortedServers = useMemo(() => {
-    if (!isAuthenticated) return [];
-
+    // The check for isAuthenticated is removed from here as well.
     let filtered = servers.filter(server => {
       const thirtyDaysAgo = new Date();
       thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
@@ -134,19 +127,9 @@ const Network: React.FC = () => {
         case 'Recommended': default: return (b.rating * b.memberCount) - (a.rating * a.memberCount);
       }
     });
-  }, [isAuthenticated, servers, searchTerm, activeSort, memberSort, performanceSort, categoryFilter, languageFilter, memberRange, segmentationFilters, growthRate, messageRate, acceptanceRate, hasCollaborations, hasInfluencers, notSaturated, activeHours]);
+  }, [servers, searchTerm, activeSort, memberSort, performanceSort, categoryFilter, languageFilter, memberRange, segmentationFilters, growthRate, messageRate, acceptanceRate, hasCollaborations, hasInfluencers, notSaturated, activeHours]);
 
-  if (!isAuthenticated) {
-    return (
-      <div className="network-auth-required">
-        <AuthModal
-          mode={modalMode}
-          onClose={() => {}}
-          onSwitchMode={() => setModalMode(prev => prev === 'login' ? 'signup' : 'login')}
-        />
-      </div>
-    );
-  }
+  // The entire !isAuthenticated block is removed.
 
   return (
     <div className="network-page">
